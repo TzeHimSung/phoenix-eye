@@ -2,10 +2,10 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
-    <HelloWorld2 msg="this is text message for Helloworld2" />
-    <!-- <div>
-      {{ testMsg }}
-    </div> -->
+    <HelloWorld2 v-bind:msg="helloWorld2msg" />
+    <div>
+      <p v-if="pSeen">now you can see this p label</p>
+    </div>
   </div>
 </template>
 
@@ -20,7 +20,10 @@ export default {
     HelloWorld2
   },
   data () {
-    // testMsg: "this is text message in data for HelloWorld2"
+    return {
+      helloWorld2msg: 'this is text message for Helloworld2',
+      pSeen: true
+    }
   }
 }
 </script>
