@@ -6,13 +6,12 @@
 
 <script>
 export default {
-  name: "HelloWorld2",
+  name: 'HelloWorld2',
   props: {
-    msg: String,
-  },
-};
+    msg: String
+  }
+}
 </script>
 
 <style scoped>
 </style>
-

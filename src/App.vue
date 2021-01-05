@@ -10,19 +10,19 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import HelloWorld2 from "./components/HelloWorld2.vue";
+import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld2 from './components/HelloWorld2.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     HelloWorld,
-    HelloWorld2,
+    HelloWorld2
   },
   data () {
     // testMsg: "this is text message in data for HelloWorld2"
   }
-};
+}
 </script>
 
 <style>
