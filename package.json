@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-html": "^6.1.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -20,11 +23,13 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
+    "eslint-config-vue": "^2.0.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-vue-libs": "^4.0.0",
     "husky": "^4.3.6",
     "vue-template-compiler": "^2.6.11"
   },
