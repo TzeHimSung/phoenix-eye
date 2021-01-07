@@ -1,6 +1,6 @@
 # phoenix-eye  
 
-Frontend project for data platform.  
+Frontend project of code:phoenix.
 
 ## Develop environment
 
@@ -19,7 +19,8 @@ npm i
 Install eslint, commitizen & cz-conventional-changelog
 
 ```shell
-sudo npm i -g eslint commitizen cz-conventional-changelog
+# use sudo when necessarily
+npm i -g eslint commitizen cz-conventional-changelog
 ```
 
 Install commitlint and husky to check git commit message and use git hook more easily
