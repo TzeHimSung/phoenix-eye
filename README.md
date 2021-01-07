@@ -19,7 +19,7 @@ npm i
 Install eslint, commitizen & cz-conventional-changelog
 
 ```shell
-# use sudo when necessarily
+# use sudo when necessary
 npm i -g eslint commitizen cz-conventional-changelog
 ```
 
