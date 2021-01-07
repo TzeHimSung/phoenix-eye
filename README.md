@@ -1,24 +1,49 @@
-# phoenix-eye
+# phoenix-eye  
 
-## Project setup
-```
-npm install
+Frontend project for data platform.  
+
+## Develop environment
+
+- Node.js 8.10.0  
+
+## Installation
+
+Clone project  
+
+```shell
+git clone https://github.com/TzeHimSung/phoenix-eye.git
+cd phoenix-eye
+npm i
 ```
 
-### Compiles and hot-reloads for development
+Install eslint, commitizen & cz-conventional-changelog
+
+```shell
+sudo npm i -g eslint commitizen cz-conventional-changelog
+```
+
+Install commitlint and husky to check git commit message and use git hook more easily
+
+```shell
+npm i -D husky @commitlint/config-conventional @commitlint/cli
+```
+
+## Launch project
+
+Compiles and hot-reloads for development  
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+Compiles and minifies for production  
+
 ```
 npm run build
 ```
 
-### Lints and fixes files
+Lints and fixes files  
+
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
