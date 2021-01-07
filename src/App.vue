@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <NavMenuOne></NavMenuOne>
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
 
     <HelloWorld msg="Welcome to Your Vue.js App" />
@@ -26,18 +27,24 @@
       <p>{{ inputMsg }}</p>
       <input v-model="inputMsg">
     </div>
+
+    <ElementContainer></ElementContainer>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import HelloWorld2 from './components/HelloWorld2.vue'
+import ElementContainer from './components/ElementContainer.vue'
+import NavMenuOne from './components/NavMenuOne.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    HelloWorld2
+    HelloWorld2,
+    ElementContainer,
+    NavMenuOne
   },
   data () {
     return {
@@ -61,11 +68,13 @@ export default {
 
 <style>
 #app {
+  position: absolute;
+  height: 100%;
+  width: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
