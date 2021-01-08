@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <NavMenuOne></NavMenuOne>
+    <ElementContainer></ElementContainer>
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
 
     <HelloWorld msg="Welcome to Your Vue.js App" />
@@ -27,8 +28,6 @@
       <p>{{ inputMsg }}</p>
       <input v-model="inputMsg">
     </div>
-
-    <ElementContainer></ElementContainer>
   </div>
 </template>
 
