@@ -1,8 +1,12 @@
-import ElementContainer from '@/components/ElementContainer.vue'
-import HelloWorld from '@/components/HelloWorld.vue'
-import HelloWorld2 from '@/components/HelloWorld2.vue'
-import NavMenuOne from '@/components/NavMenuOne.vue'
+// import common components
 
+// import self defined components
+import ElementContainer from '@/components/ElementContainer'
+import HelloWorld from '@/components/HelloWorld'
+import HelloWorld2 from '@/components/HelloWorld2'
+import NavMenuOne from '@/components/NavMenuOne'
+
+// default export configuration for App.vue
 export default {
   name: 'App',
   components: {
