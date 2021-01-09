@@ -15,6 +15,10 @@ export default {
     ElementContainer,
     NavMenuOne
   },
+  created () {
+    console.log('test created hook')
+    console.log(this.todos)
+  },
   data () {
     return {
       helloWorld2msg: 'this is text message for Helloworld2',
