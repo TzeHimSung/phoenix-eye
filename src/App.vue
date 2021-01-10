@@ -2,9 +2,6 @@
   <div id="app">
     <NavMenuOne></NavMenuOne>
     <ElementContainer></ElementContainer>
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-
-    <HelloWorld msg="Welcome to Your Vue.js App" />
     <HelloWorld2 v-bind:msg="helloWorld2msg" />
 
     <div>
@@ -27,6 +24,15 @@
     <div>
       <p>{{ inputMsg }}</p>
       <input v-model="inputMsg">
+    </div>
+
+    <div>
+      <p>Using mustaches: {{ rawHtml }}</p>
+      <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+    </div>
+
+    <div>
+      <button :disabled="isBtnDisabled" @click="btnClicked">Button</button>
     </div>
   </div>
 </template>

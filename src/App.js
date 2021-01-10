@@ -28,12 +28,17 @@ export default {
         { id: 2, text: 'Learn Vue' },
         { id: 3, text: 'Make a big deal' }
       ],
-      inputMsg: 'same message'
+      inputMsg: 'same message',
+      rawHtml: '<span style="color: red">This should be red.</span>',
+      isBtnDisabled: false
     }
   },
   methods: {
     reverseMessage () {
       this.helloWorld2msg = this.helloWorld2msg.split('').reverse().join('')
+    },
+    btnClicked () {
+      console.log('this btn is clicked.')
     }
   }
 }
