@@ -34,6 +34,11 @@
     <div>
       <button :disabled="isBtnDisabled" @click="btnClicked">Button</button>
     </div>
+
+    <div id="example">
+      <p>Original message: "{{ inputMsg }}"</p>
+      <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    </div>
   </div>
 </template>
 

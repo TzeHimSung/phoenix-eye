@@ -2,7 +2,6 @@
 
 // import self defined components
 import ElementContainer from '@/components/ElementContainer'
-import HelloWorld from '@/components/HelloWorld'
 import HelloWorld2 from '@/components/HelloWorld2'
 import NavMenuOne from '@/components/NavMenuOne'
 
@@ -10,7 +9,6 @@ import NavMenuOne from '@/components/NavMenuOne'
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     HelloWorld2,
     ElementContainer,
     NavMenuOne
@@ -31,6 +29,12 @@ export default {
       inputMsg: 'same message',
       rawHtml: '<span style="color: red">This should be red.</span>',
       isBtnDisabled: false
+    }
+  },
+  computed: {
+    // computed attribute getter
+    reversedMessage () {
+      return this.inputMsg.split('').reverse().join('')
     }
   },
   methods: {
