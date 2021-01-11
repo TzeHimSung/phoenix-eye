@@ -28,13 +28,29 @@ export default {
       ],
       inputMsg: 'same message',
       rawHtml: '<span style="color: red">This should be red.</span>',
-      isBtnDisabled: false
+      isBtnDisabled: false,
+      firstName: 'Foo',
+      lastName: 'Bar',
+      fullName: 'Foo Bar'
     }
   },
   computed: {
     // computed attribute getter
-    reversedMessage () {
-      return this.inputMsg.split('').reverse().join('')
+    reversedMessage: {
+      get: function () {
+        return this.inputMsg.split('').reverse().join('')
+      },
+      set: function (newValue) {
+        this.inputMsg = newValue
+      }
+    }
+  },
+  watch: {
+    firstName: function (val) {
+      this.fullName = val + ' ' + this.lastName
+    },
+    lastName: function (val) {
+      this.fullName = this.firstName + ' ' + val
     }
   },
   methods: {
