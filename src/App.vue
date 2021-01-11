@@ -38,6 +38,11 @@
     <div id="example">
       <p>Original message: "{{ inputMsg }}"</p>
       <p>Computed reversed message: "{{ reversedMessage }}"</p>
+      <p>reversed message in function: "{{ reverseMessage() }}"</p>
+    </div>
+
+    <div id="demo">
+      {{ fullName }}
     </div>
   </div>
 </template>
