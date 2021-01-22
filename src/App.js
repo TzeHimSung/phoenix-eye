@@ -35,7 +35,7 @@ export default {
     }
   },
   computed: {
-    // computed attribute getter
+    // computed attribute getter and setter
     reversedMessage: {
       get: function () {
         return this.inputMsg.split('').reverse().join('')
