@@ -23,6 +23,11 @@ Install eslint, commitizen & cz-conventional-changelog
 npm i -g eslint commitizen cz-conventional-changelog
 ```
 
+Commitizen initialization
+```shell
+commitizen init cz-conventional-changelog --save --save-exact
+```
+
 Install commitlint and husky to check git commit message and use git hook more easily
 
 ```shell
