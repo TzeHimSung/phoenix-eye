@@ -13,10 +13,6 @@ export default {
     ElementContainer,
     NavMenuOne
   },
-  created () {
-    console.log('test created hook')
-    console.log(this.todos)
-  },
   data () {
     return {
       helloWorld2msg: 'this is text message for Helloworld2',
@@ -31,7 +27,9 @@ export default {
       isBtnDisabled: false,
       firstName: 'Foo',
       lastName: 'Bar',
-      fullName: 'Foo Bar'
+      fullName: 'Foo Bar',
+      question: '',
+      answer: 'I cannot give you an answer until you ask a question!'
     }
   },
   computed: {
@@ -51,7 +49,14 @@ export default {
     },
     lastName: function (val) {
       this.fullName = this.firstName + ' ' + val
+    },
+    question: function (newQuestion, oldQuestion) {
+      this.answer = 'Waiting for you to stop typing...'
+      this.debouncedGetAnswer()
     }
+  },
+  created () {
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
   },
   methods: {
     reverseMessage () {
@@ -59,6 +64,21 @@ export default {
     },
     btnClicked () {
       console.log('this btn is clicked.')
+    },
+    getAnswer () {
+      if (this.question.indexOf('?') === -1) {
+        this.answer = 'Questions usually contain a question mark. ;-)'
+        return
+      }
+      this.answer = 'Thinking...'
+      var vm = this
+      axios.get('https://yesno.wtf/api')
+        .then(function (response) {
+          vm.answer = _.capitalize(response.data.answer)
+        })
+        .catch(function (error) {
+          vm.answer = 'Error! Could not reach the API. ' + error
+        })
     }
   }
 }
