@@ -29,7 +29,11 @@ export default {
       lastName: 'Bar',
       fullName: 'Foo Bar',
       question: '',
-      answer: 'I cannot give you an answer until you ask a question!'
+      answer: 'I cannot give you an answer until you ask a question!',
+      isActive: true,
+      error: null,
+      activeClass: 'active',
+      errorClass: 'text-danger'
     }
   },
   computed: {
@@ -40,6 +44,12 @@ export default {
       },
       set: function (newValue) {
         this.inputMsg = newValue
+      }
+    },
+    classObject: function () {
+      return {
+        active: this.isActive && !this.error,
+        'text-danger': this.error && this.error.type === 'fatal'
       }
     }
   },

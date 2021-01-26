@@ -52,6 +52,15 @@
       </p>
       <p>{{ answer }}</p>
     </div>
+
+    <div
+      class="static"
+      :class="classObject"
+    ></div>
+
+    <div :class="[activeClass, errorClass]"></div>
+
+    <div :class="[isActive ? activeClass : '', errorClass]"></div>
   </div>
 </template>
 
