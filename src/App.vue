@@ -61,12 +61,63 @@
     <div :class="[activeClass, errorClass]"></div>
 
     <div :class="[isActive ? activeClass : '', errorClass]"></div>
+
+    <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">
+      <label>hahaha</label>
+    </div>
+
+    <div :style="[styleObject, styleObject2]"></div>
+
+    <h1 v-if="awesome">Vue is awesome!</h1>
+    <h1 v-else>Oh no, React is awesome!</h1>
+
+    <h1 v-if="Math.random() > 0.5">Now you see me</h1>
+    <h1 v-else>Now you don't</h1>
+
+    <div v-if="type === 'a'">a</div>
+    <div v-else-if="type === 'b'">b</div>
+    <div v-else-if="type === 'c'">c</div>
+    <div v-else>not a/b/c</div>
+
+    <!-- a rubbish achievement -->
+    <template v-if="loginType === 'username'">
+      <label>Username</label>
+      <input placeholder="Enter your username">
+    </template>
+    <template v-else>
+      <label>Email</label>
+      <input placeholder="Enter your email address">
+    </template>
+
+    <template v-if="loginType === 'username'">
+      <label>Username</label>
+      <input placeholder="Enter your username" key="username-input">
+    </template>
+    <template v-else>
+      <label>Email</label>
+      <input placeholder="Enter your email address" key="email-input">
+    </template>
+
+    <!-- v-show doesn't support template and v-else -->
+    <h1 v-show="ok">hello v-show!</h1>
+
+    <div>
+      <ul id="example-1">
+        <li v-for="item in items" :key="item.message">
+          {{ item.message }}
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <ul id="example-2">
+        <li v-for="(item, index) in items">
+          {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 
 <script src="./App.js" />
 
