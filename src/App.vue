@@ -61,12 +61,14 @@
     <div :class="[activeClass, errorClass]"></div>
 
     <div :class="[isActive ? activeClass : '', errorClass]"></div>
+
+    <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">
+      <label>hahaha</label>
+    </div>
+
+    <div :style="[styleObject, styleObject2]"></div>
   </div>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 
 <script src="./App.js" />
 

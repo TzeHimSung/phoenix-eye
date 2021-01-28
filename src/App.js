@@ -33,7 +33,17 @@ export default {
       isActive: true,
       error: null,
       activeClass: 'active',
-      errorClass: 'text-danger'
+      errorClass: 'text-danger',
+      activeColor: 'red',
+      fontSize: 30,
+      styleObject: {
+        color: 'red',
+        fontSize: '13px'
+      },
+      styleObject2: {
+        'margin-left': '10px',
+        'margin-top': '5px'
+      }
     }
   },
   computed: {
@@ -62,11 +72,11 @@ export default {
     },
     question: function (newQuestion, oldQuestion) {
       this.answer = 'Waiting for you to stop typing...'
-      this.debouncedGetAnswer()
+      // this.debouncedGetAnswer()
     }
   },
   created () {
-    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+    // this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
   },
   methods: {
     reverseMessage () {
@@ -74,21 +84,21 @@ export default {
     },
     btnClicked () {
       console.log('this btn is clicked.')
-    },
-    getAnswer () {
-      if (this.question.indexOf('?') === -1) {
-        this.answer = 'Questions usually contain a question mark. ;-)'
-        return
-      }
-      this.answer = 'Thinking...'
-      var vm = this
-      axios.get('https://yesno.wtf/api')
-        .then(function (response) {
-          vm.answer = _.capitalize(response.data.answer)
-        })
-        .catch(function (error) {
-          vm.answer = 'Error! Could not reach the API. ' + error
-        })
     }
+    // getAnswer () {
+    //   if (this.question.indexOf('?') === -1) {
+    //     this.answer = 'Questions usually contain a question mark. ;-)'
+    //     return
+    //   }
+    //   this.answer = 'Thinking...'
+    //   var vm = this
+    //   axios.get('https://yesno.wtf/api')
+    //     .then(function (response) {
+    //       vm.answer = _.capitalize(response.data.answer)
+    //     })
+    //     .catch(function (error) {
+    //       vm.answer = 'Error! Could not reach the API. ' + error
+    //     })
+    // }
   }
 }
