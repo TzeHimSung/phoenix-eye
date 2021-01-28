@@ -43,7 +43,11 @@ export default {
       styleObject2: {
         'margin-left': '10px',
         'margin-top': '5px'
-      }
+      },
+      awesome: true,
+      type: 'a',
+      loginType: 'username',
+      ok: true
     }
   },
   computed: {
