@@ -100,6 +100,22 @@
 
     <!-- v-show doesn't support template and v-else -->
     <h1 v-show="ok">hello v-show!</h1>
+
+    <div>
+      <ul id="example-1">
+        <li v-for="item in items" :key="item.message">
+          {{ item.message }}
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <ul id="example-2">
+        <li v-for="(item, index) in items">
+          {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

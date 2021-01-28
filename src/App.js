@@ -47,7 +47,12 @@ export default {
       awesome: true,
       type: 'a',
       loginType: 'username',
-      ok: true
+      ok: true,
+      parentMessage: 'Parent',
+      items: [
+        { message: 'Foo' },
+        { message: 'Bar' }
+      ]
     }
   },
   computed: {
