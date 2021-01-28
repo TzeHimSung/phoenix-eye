@@ -23,7 +23,7 @@
 
     <div>
       <p>{{ inputMsg }}</p>
-      <input v-model="inputMsg">
+      <input v-model="inputMsg" />
     </div>
 
     <div>
@@ -44,8 +44,29 @@
     <div id="demo">
       {{ fullName }}
     </div>
+
+    <div id="watch-example">
+      <p>
+        Ask a yes/no question:
+        <input v-model="question" />
+      </p>
+      <p>{{ answer }}</p>
+    </div>
+
+    <div
+      class="static"
+      :class="classObject"
+    ></div>
+
+    <div :class="[activeClass, errorClass]"></div>
+
+    <div :class="[isActive ? activeClass : '', errorClass]"></div>
   </div>
 </template>
+
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 
 <script src="./App.js" />
 
