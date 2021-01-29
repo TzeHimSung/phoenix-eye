@@ -102,11 +102,46 @@
     <div v-for="item in items" :key="item.message">
       {{ item.message }}
     </div>
+    <div>
+      <ul>
+        <li v-for="n in evenNumbers">{{ n }}</li>
+      </ul>
+    </div>
+    <div id="todo-list-example">
+      <form v-on:submit.prevent="addNewTodo">
+        <label for="new-todo">Add a todo</label>
+        <input
+          v-model="newTodoText"
+          id="new-todo"
+          placeholder="E.g Feed the cat"
+        >
+        <button>Add</button>
+      </form>
+      <ul>
+        <li
+          is="todo-item"
+          v-for="(todo, index) in todos"
+          v-bind:key="todo.id"
+          v-bind:title="todo.title"
+          v-on:remove="todos.splice(index, 1)"
+        ></li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import HelloWorld2 from '@/components/HelloWorld2'
+
+Vue.component('todo-item', {
+  template:
+    '<li>' +
+      '{{ title }}' +
+      '<button v-on:click="$emit(\'remove\')">Remove</button>' +
+    '</li>',
+  props: ['title']
+})
 
 export default {
   components: {
@@ -116,11 +151,6 @@ export default {
     return {
       helloWorld2msg: 'this is text message for Helloworld2',
       pSeen: true,
-      todos: [
-        { id: 1, text: 'Learn JavaScript' },
-        { id: 2, text: 'Learn Vue' },
-        { id: 3, text: 'Make a big deal' }
-      ],
       inputMsg: 'same message',
       rawHtml: '<span style="color: red">This should be red.</span>',
       isBtnDisabled: false,
@@ -151,7 +181,24 @@ export default {
       items: [
         { message: 'Foo' },
         { message: 'Bar' }
-      ]
+      ],
+      numbers: [1, 2, 3, 4, 5],
+      newTodoText: '',
+      todos: [
+        {
+          id: 1,
+          title: 'Do the dishes'
+        },
+        {
+          id: 2,
+          title: 'Take out the trash'
+        },
+        {
+          id: 3,
+          title: 'Mow the lawn'
+        }
+      ],
+      nextTodoId: 4
     }
   },
   computed: {
@@ -169,6 +216,11 @@ export default {
         active: this.isActive && !this.error,
         'text-danger': this.error && this.error.type === 'fatal'
       }
+    },
+    evenNumbers: function () {
+      return this.numbers.filter(function (number) {
+        return number % 2 === 0
+      })
     }
   },
   watch: {
@@ -188,6 +240,13 @@ export default {
     },
     btnClicked () {
       console.log('this btn is clicked.')
+    },
+    addNewTodo: function () {
+      this.todos.push({
+        id: this.nextTodoId++,
+        title: this.newTodoText
+      })
+      this.newTodoText = ''
     }
   }
 }
