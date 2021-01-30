@@ -278,17 +278,17 @@ export default {
       header: {
         list: [
           {
-            name: '作业平台',
+            name: '数据存储',
             id: 1,
             show: true
           },
           {
-            name: '配置平台',
+            name: '模型存储',
             id: 2,
             show: true
           },
           {
-            name: '监控平台',
+            name: '模型训练',
             id: 3,
             show: true,
             navList: [
@@ -312,7 +312,7 @@ export default {
             navActive: 2
           },
           {
-            name: '蓝盾平台',
+            name: '模型应用',
             id: 4,
             show: true
           }
