@@ -1,8 +1,5 @@
 <template>
   <div class="monitor-navigation">
-    <div style="margin-bottom: 20px">
-      <bk-button theme="primary" @click="handleChangeNav">切换导航类型：{{curNav.name}}</bk-button>
-    </div>
     <bk-navigation :header-title="nav.id" :side-title="nav.title" :default-open="false"
       :navigation-type="curNav.nav" :need-menu="curNav.needMenu" @toggle="handleToggle">
       <template slot="header">
@@ -111,11 +108,42 @@
         </bk-navigation-menu>
       </template>
       <div class="monitor-navigation-content">
-
+        <selection
+          title="test"
+          :list="testList"
+        ></selection>
+        <div>
+          <bk-button theme="primary" @click="toggleTableSize">主要按钮</bk-button>
+          <bk-table style="margin-top: 15px;" :data="data" :size="size" :pagination="pagination"
+            @row-mouse-enter="handleRowMouseEnter" @row-mouse-leave="handleRowMouseLeave" @page-change="handlePageChange"
+            @page-limit-change="handlePageLimitChange">
+            <bk-table-column type="selection" width="60"></bk-table-column>
+            <bk-table-column type="index" label="schema1" width="60"></bk-table-column>
+            <bk-table-column label="schema2" prop="ip"></bk-table-column>
+            <bk-table-column label="schema3" prop="source"></bk-table-column>
+            <bk-table-column label="状态" prop="status"></bk-table-column>
+            <bk-table-column label="创建时间" prop="create_time"></bk-table-column>
+            <bk-table-column label="操作" width="150">
+              <template slot-scope="props">
+                <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '创建中'" @click="reset(props.row)">重置
+                </bk-button>
+                <bk-button class="mr10" theme="primary" text @click="remove(props.row)">移除</bk-button>
+                <bk-popover class="dot-menu" placement="bottom-start" theme="dot-menu light" trigger="click" :arrow="false"
+                  offset="15" :distance="0">
+                  <span class="dot-menu-trigger"></span>
+                  <ul class="dot-menu-list" slot="content">
+                    <li class="dot-menu-item">导入</li>
+                    <li class="dot-menu-item">导出</li>
+                  </ul>
+                </bk-popover>
+              </template>
+            </bk-table-column>
+          </bk-table>
+        </div>
       </div>
       <template slot="footer">
         <div class="monitor-navigation-footer">
-          Copyright © 2012-{{new Date().getFullYear()}} Tencent BlueKing. All Rights Reserved. 腾讯蓝鲸 版权所有
+          Copyright © 2021-{{new Date().getFullYear()}} Author: TzeHimSung
         </div>
       </template>
     </bk-navigation>
@@ -123,7 +151,9 @@
 </template>
 
 <script>
-import { bkNavigation, bkNavigationMenu, bkNavigationMenuItem, bkSelect, bkOption, bkPopover, bkButton } from 'bk-magic-vue'
+import { bkNavigation, bkNavigationMenu, bkNavigationMenuItem, bkSelect, bkOption, bkPopover, bkTable, bkTableColumn } from 'bk-magic-vue'
+import selection from '@/components/Selection'
+
 export default {
   name: 'monitor-navigation',
   components: {
@@ -133,10 +163,17 @@ export default {
     bkSelect,
     bkOption,
     bkPopover,
-    bkButton
+    bkTable,
+    bkTableColumn,
+    selection
   },
   data () {
     return {
+      testList: [
+        { id: 0, name: 'haha1' },
+        { id: 1, name: 'haha2' },
+        { id: 2, name: 'haha3' }
+      ],
       navActive: 2,
       navMap: [
         {
@@ -273,19 +310,21 @@ export default {
         id: '首页一',
         toggle: false,
         submenuActive: false,
-        title: '蓝鲸测试平台'
+        title: 'NLP工具箱'
       },
       header: {
         list: [
           {
             name: '数据存储',
             id: 1,
-            show: true
+            show: true,
+            navList: []
           },
           {
             name: '模型存储',
             id: 2,
-            show: true
+            show: true,
+            navList: []
           },
           {
             name: '模型训练',
@@ -314,7 +353,8 @@ export default {
           {
             name: '模型应用',
             id: 4,
-            show: true
+            show: true,
+            navList: []
           }
         ],
         selectList: [
@@ -331,7 +371,7 @@ export default {
             id: 3
           }
         ],
-        active: 2,
+        active: 0,
         bizId: 1
       },
       message: {
@@ -380,6 +420,80 @@ export default {
           '权限中心',
           '退出'
         ]
+      },
+      size: 'small',
+      data: [
+        {
+          ip: '192.168.0.1',
+          source: 'QQ',
+          status: '创建中',
+          create_time: '2018-05-25 15:02:24',
+          children: [
+            {
+              name: '用户管理',
+              count: '23',
+              creator: 'person2',
+              create_time: '2017-10-10 11:12',
+              desc: '用户管理'
+            },
+            {
+              name: '模块管理',
+              count: '2',
+              creator: 'person1',
+              create_time: '2017-10-10 11:12',
+              desc: '无数据测试'
+            }
+          ]
+        },
+        {
+          ip: '192.168.0.2',
+          source: '微信',
+          status: '正常',
+          create_time: '2018-05-25 15:02:24',
+          children: [
+            {
+              name: '用户管理',
+              count: '23',
+              creator: 'person2',
+              create_time: '2017-10-10 11:12',
+              desc: '用户管理'
+            },
+            {
+              name: '模块管理',
+              count: '2',
+              creator: 'person1',
+              create_time: '2017-10-10 11:12',
+              desc: '无数据测试'
+            }
+          ]
+        },
+        {
+          ip: '192.168.0.3',
+          source: 'QQ',
+          status: '创建中',
+          create_time: '2018-05-25 15:02:24',
+          children: [
+            {
+              name: '用户管理',
+              count: '23',
+              creator: 'person2',
+              create_time: '2017-10-10 11:12',
+              desc: '用户管理'
+            },
+            {
+              name: '模块管理',
+              count: '2',
+              creator: 'person1',
+              create_time: '2017-10-10 11:12',
+              desc: '无数据测试'
+            }
+          ]
+        }
+      ],
+      pagination: {
+        current: 1,
+        count: 500,
+        limit: 20
       }
     }
   },
@@ -405,6 +519,17 @@ export default {
     },
     handleChangeNav () {
       this.navActive = (this.navActive + 1) % 3
+    },
+    handlePageLimitChange () {
+      console.log('handlePageLimitChange', arguments)
+    },
+    toggleTableSize () {
+      const size = ['small', 'medium', 'large']
+      const index = (size.indexOf(this.size) + 1) % 3
+      this.size = size[index]
+    },
+    handlePageChange (page) {
+      this.pagination.current = page
     }
   }
 }
@@ -825,4 +950,51 @@ export default {
     -webkit-box-shadow: none;
     box-shadow: none;
   }
+
+.dot-menu {
+      display: inline-block;
+      vertical-align: middle;
+  }
+.tippy-tooltip.dot-menu-theme {
+    padding: 0;
+}
+.dot-menu-trigger {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 0;
+    cursor: pointer;
+}
+.dot-menu-trigger:hover {
+    color: #3A84FF;
+    background-color: #DCDEE5;
+}
+.dot-menu-trigger:before {
+    content: "";
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: currentColor;
+    box-shadow: 0 -4px 0 currentColor, 0 4px 0 currentColor;
+}
+.dot-menu-list {
+    margin: 0;
+    padding: 5px 0;
+    min-width: 50px;
+    list-style: none;
+}
+.dot-menu-list .dot-menu-item {
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: 26px;
+    cursor: pointer;
+    &:hover {
+        background-color: #eaf3ff;
+        color: #3a84ff;
+    }
+}
 </style>
