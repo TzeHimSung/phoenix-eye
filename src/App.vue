@@ -1,23 +1,26 @@
 <template>
   <div id="app">
-    <NavMenuOne></NavMenuOne>
-    <ElementContainer></ElementContainer>
+    <DataStore></DataStore>
+    <!-- <NavMenuOne></NavMenuOne>
+    <ElementContainer></ElementContainer> -->
     <LearnVue></LearnVue>
   </div>
 </template>
 
 <script>
 // import self defined components
-import ElementContainer from '@/components/ElementContainer'
+import DataStore from '@/components/DataStore'
+// import ElementContainer from '@/components/ElementContainer'
 import LearnVue from '@/components/LearnVue'
-import NavMenuOne from '@/components/NavMenuOne'
+// import NavMenuOne from '@/components/NavMenuOne'
 // default export configuration for App.vue
 export default {
   name: 'App',
   components: {
-    ElementContainer,
-    LearnVue,
-    NavMenuOne
+    DataStore,
+    // ElementContainer,
+    LearnVue
+    // NavMenuOne
   }
 }
 </script>
