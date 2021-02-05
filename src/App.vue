@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <DataStore></DataStore>
-    <!-- <NavMenuOne></NavMenuOne>
-    <ElementContainer></ElementContainer> -->
+    <!-- <NavMenuOne></NavMenuOne> -->
+    <!-- <ElementContainer></ElementContainer> -->
     <LearnVue></LearnVue>
   </div>
 </template>
