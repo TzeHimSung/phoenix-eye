@@ -10,6 +10,7 @@ import bkMagic from 'bk-magic-vue'
 // 全量引入 bk-magic-vue 样式
 import 'bk-magic-vue/dist/bk-magic-vue.min.css'
 
+// import vue-router
 import router from './router'
 
 Vue.use(ElementUI)
@@ -18,6 +19,7 @@ Vue.use(bkMagic)
 // 阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false
 
+// create a vue instance
 new Vue({
   router,
   render: h => h(App)
