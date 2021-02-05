@@ -127,6 +127,19 @@
         ></li>
       </ul>
     </div>
+    <div>
+      <button v-on:click="counter += 1">Add 1</button>
+      <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+    <div>
+      <button v-on:click="greet">Greet</button>
+      <button v-on:click="say(sayMessage)">Say hi</button>
+    </div>
+    <div>
+      <button v-on:click.prevent="warn('Form cannot be submitted yet.', $event)">
+        Submit
+      </button>
+    </div>
   </div>
 </template>
 
@@ -198,7 +211,9 @@ export default {
           title: 'Mow the lawn'
         }
       ],
-      nextTodoId: 4
+      nextTodoId: 4,
+      counter: 0,
+      sayMessage: 'hi'
     }
   },
   computed: {
@@ -241,12 +256,27 @@ export default {
     btnClicked () {
       console.log('this btn is clicked.')
     },
-    addNewTodo: function () {
+    addNewTodo () {
       this.todos.push({
         id: this.nextTodoId++,
         title: this.newTodoText
       })
       this.newTodoText = ''
+    },
+    greet (event) {
+      alert('Hello Vue.js!')
+      if (event) {
+        alert(event.target.tagName)
+      }
+    },
+    say (message) {
+      alert(message)
+    },
+    warn (message, event) {
+      if (event) {
+        event.preventDefault()
+      }
+      alert(message)
     }
   }
 }
