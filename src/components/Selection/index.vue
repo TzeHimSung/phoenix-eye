@@ -44,6 +44,7 @@ export default {
 #selection {
   text-align: center;
   margin: 10px;
+  display: inline;
 }
 
 #labelStyle {
