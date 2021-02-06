@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+// import pages
 import Home from '../views/Home.vue'
+import DataStore from '@/views/DataStore'
+import ModelStore from '@/views/ModelStore'
+import ModelTraining from '@/views/ModelTraining'
+import ModelApp from '@/views/ModelApp'
+import LearnVue from '@/components/LearnVue'
 
 Vue.use(VueRouter)
 
@@ -17,6 +24,31 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/datastore',
+    name: 'DataStore',
+    component: DataStore
+  },
+  {
+    path: '/modelstore',
+    name: 'ModelStore',
+    component: ModelStore
+  },
+  {
+    path: '/modeltraining',
+    name: 'ModelTraining',
+    component: ModelTraining
+  },
+  {
+    path: '/modelapp',
+    name: 'ModelApp',
+    component: ModelApp
+  },
+  {
+    path: '/learnvue',
+    name: 'LearnVue',
+    component: LearnVue
   }
 ]
 
