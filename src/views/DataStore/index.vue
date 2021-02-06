@@ -9,7 +9,6 @@
       <bk-table style="margin-top: 15px" :data="data" :size="'small'" :pagination="pagination"
         @row-mouse-enter="handleRowMouseEnter" @row-mouse-leave="handleRowMouseLeave" @page-change="handlePageChange"
         @page-limit-change="handlePageLimitChange">
-        <!-- <bk-table-column type="selection" width="60"></bk-table-column> -->
         <bk-table-column type="index" label="ID" width="60"></bk-table-column>
         <bk-table-column label="文件名" prop="ip"></bk-table-column>
         <bk-table-column label="来源" prop="source"></bk-table-column>
@@ -19,15 +18,7 @@
           <template slot-scope="props">
             <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'" @click="reset(props.row)">下载
             </bk-button>
-            <bk-button class="mr10" theme="primary" text @click="remove(props.row)">移除</bk-button>
-            <bk-popover class="dot-menu" placement="bottom-start" theme="dot-menu light" trigger="click" :arrow="false"
-              offset="15" :distance="0">
-              <span class="dot-menu-trigger"></span>
-              <ul class="dot-menu-list" slot="content">
-                <li class="dot-menu-item">导入</li>
-                <li class="dot-menu-item">导出</li>
-              </ul>
-            </bk-popover>
+            <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
           </template>
         </bk-table-column>
       </bk-table>
@@ -37,7 +28,7 @@
 
 <script>
 import selection from '@/components/Selection'
-import { bkTable, bkTableColumn, bkButton, bkPopover } from 'bk-magic-vue'
+import { bkTable, bkTableColumn, bkButton } from 'bk-magic-vue'
 
 export default {
   name: 'DataStore',
@@ -45,8 +36,7 @@ export default {
     selection,
     bkTable,
     bkTableColumn,
-    bkButton,
-    bkPopover
+    bkButton
   },
   data () {
     return {
@@ -84,19 +74,19 @@ export default {
           ip: '数据1',
           source: '用户上传',
           status: '上传中',
-          create_time: '2018-05-25 15:02:24'
+          create_time: '2021-01-25 15:02:24'
         },
         {
           ip: '数据2',
           source: '输出结果',
           status: '正常',
-          create_time: '2018-05-25 15:02:24'
+          create_time: '2021-01-25 15:02:24'
         },
         {
           ip: '数据3',
           source: '用户上传',
           status: '上传中',
-          create_time: '2018-05-25 15:02:24'
+          create_time: '2021-01-25 15:02:24'
         }
       ],
       pagination: {
