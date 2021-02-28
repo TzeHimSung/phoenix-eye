@@ -73,6 +73,12 @@ export default {
       header: {
         list: [
           {
+            name: '我的首页',
+            id: 0,
+            show: true,
+            url: '/'
+          },
+          {
             name: '数据存储',
             id: 1,
             show: true,
@@ -107,7 +113,7 @@ export default {
             name: 'LearnVue',
             id: 5,
             show: true,
-            url: 'learnvue'
+            url: '/learnvue'
           }
         ],
         active: 0
@@ -265,98 +271,6 @@ export default {
   border-top:1px solid #DCDEE5;
   color:#63656E;
   font-size:12px;
-}
-.monitor-navigation-message {
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  -webkit-box-orient:vertical;
-  -webkit-box-direction:normal;
-  -ms-flex-direction:column;
-  flex-direction:column;
-  width:360px;
-  background-color:#FFFFFF;
-  border:1px solid #E2E2E2;
-  border-radius:2px;
-  -webkit-box-shadow:0px 3px 4px 0px rgba(64,112,203,0.06);
-  box-shadow:0px 3px 4px 0px rgba(64,112,203,0.06);
-  color:#979BA5;
-  font-size:12px;
-}
-.monitor-navigation-message .message-title {
-  -webkit-box-flex:0;
-  -ms-flex:0 0 48px;
-  flex:0 0 48px;
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  -webkit-box-align:center;
-  -ms-flex-align:center;
-  align-items:center;
-  color:#313238;
-  font-size:14px;
-  padding:0 20px;
-  margin:0;
-  border-bottom:1px solid #F0F1F5;
-}
-.monitor-navigation-message .message-list {
-  -webkit-box-flex:1;
-  -ms-flex:1;
-  flex:1;
-  max-height:450px;
-  overflow:auto;
-  margin:0;
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  -webkit-box-orient:vertical;
-  -webkit-box-direction:normal;
-  -ms-flex-direction:column;
-  flex-direction:column;
-  padding:0;
-}
-.monitor-navigation-message .message-list-item {
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  width:100%;
-  padding:0 20px;
-}
-.monitor-navigation-message .message-list-item .item-message {
-  padding:13px 0;
-  line-height:16px;
-  min-height:42px;
-  -webkit-box-flex:1;
-  -ms-flex:1;
-  flex:1;
-  -ms-flex-wrap:wrap;
-  flex-wrap:wrap;
-  color:#63656E;
-}
-.monitor-navigation-message .message-list-item .item-date {
-  padding:13px 0;
-  margin-left:16px;
-  color:#979BA5;
-}
-.monitor-navigation-message .message-list-item:hover {
-  cursor:pointer;
-  background:#F0F1F5;
-}
-.monitor-navigation-message .message-footer {
-  -webkit-box-flex:0;
-  -ms-flex:0 0 42px;
-  flex:0 0 42px;
-  border-top:1px solid #F0F1F5;
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  -webkit-box-align:center;
-  -ms-flex-align:center;
-  align-items:center;
-  -webkit-box-pack:center;
-  -ms-flex-pack:center;
-  justify-content:center;
-  color:#3A84FF;
 }
 .monitor-navigation-nav {
   width:150px;
