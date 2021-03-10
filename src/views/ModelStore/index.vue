@@ -7,13 +7,12 @@
     </div>
     <div id="DataTable">
       <bk-table style="margin-top: 15px" :data="data" :size="'small'" :pagination="pagination"
-        @row-mouse-enter="handleRowMouseEnter" @row-mouse-leave="handleRowMouseLeave" @page-change="handlePageChange"
-        @page-limit-change="handlePageLimitChange">
+        @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
         <bk-table-column type="index" label="ID" width="60"></bk-table-column>
-        <bk-table-column label="文件名" prop="ip"></bk-table-column>
+        <bk-table-column label="文件名" prop="fileName"></bk-table-column>
         <bk-table-column label="来源" prop="source"></bk-table-column>
         <bk-table-column label="状态" prop="status"></bk-table-column>
-        <bk-table-column label="创建时间" prop="create_time"></bk-table-column>
+        <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
         <bk-table-column label="操作" width="150">
           <template slot-scope="props">
             <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'"
@@ -28,6 +27,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import selection from '@/components/Selection'
 import { bkTable, bkTableColumn, bkButton } from 'bk-magic-vue'
 
@@ -38,6 +38,14 @@ export default {
     bkTable,
     bkTableColumn,
     bkButton
+  },
+  created () {
+    // get model store information
+    axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
+      // this.data = res.data['modelStoreInfo']
+      // this.projectList = res.data['projectList']
+      // this.fileSuffixList = res.data['fileSuffixList']
+    })
   },
   data () {
     return {
@@ -68,27 +76,27 @@ export default {
       size: 'small',
       data: [
         {
-          ip: '模型1',
+          fileName: '模型1',
           source: '用户上传',
           status: '上传中',
-          create_time: '2021-01-25 15:02:24'
+          createTime: '2021-01-25 15:02:24'
         },
         {
-          ip: '模型2',
+          fileName: '模型2',
           source: '输出结果',
           status: '正常',
-          create_time: '2021-01-25 15:02:24'
+          createTime: '2021-01-25 15:02:24'
         },
         {
-          ip: '模型3',
+          fileName: '模型3',
           source: '用户上传',
           status: '上传中',
-          create_time: '2021-01-25 15:02:24'
+          createTime: '2021-01-25 15:02:24'
         }
       ],
       pagination: {
         current: 1,
-        count: 500,
+        count: 3,
         limit: 20
       }
     }

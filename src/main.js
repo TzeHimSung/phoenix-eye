@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
+
+// import vue-router
+import router from './router'
+
+// import element ui
 import ElementUI from 'element-ui'
 // CSS configuration of element-ui is needed to be imported
 import 'element-ui/lib/theme-chalk/index.css'
 
-// 全量引入 bk-magic-vue
+// import bk-magic-vue
 import bkMagic from 'bk-magic-vue'
-
-// 全量引入 bk-magic-vue 样式
+// import bk-magic-vue css style
 import 'bk-magic-vue/dist/bk-magic-vue.min.css'
-
-// import vue-router
-import router from './router'
 
 Vue.use(ElementUI)
 Vue.use(bkMagic)
