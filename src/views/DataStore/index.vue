@@ -6,7 +6,7 @@
       <bk-button theme="primary" style="margin-left: 10px;">上传数据</bk-button>
     </div>
     <div id="DataTable">
-      <bk-table style="margin-top: 15px" :data="data" :size="'small'" :pagination="pagination"
+      <bk-table style="margin-top: 15px" :data="tableData" :size="'small'" :pagination="pagination"
         @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
         <bk-table-column type="index" label="ID" width="60"></bk-table-column>
         <bk-table-column label="文件名" prop="fileName"></bk-table-column>
@@ -41,9 +41,10 @@ export default {
   created () {
     // get data store information
     axios.get('http://localhost:8000/api/getDataStoreInfo').then(res => {
-      this.data = res.data['dataStoreInfo']
-      // this.projectList = res.data['projectList']
-      // this.fileSuffixList = res.data['fileSuffixList']
+      console.log(res.data)
+      this.tableData = res.data['dataStoreInfo']
+      this.projectList = res.data['projectList']
+      this.fileSuffixList = res.data['fileSuffixList']
     })
   },
   data () {
@@ -77,21 +78,9 @@ export default {
         }
       ],
       size: 'small',
-      data: [
+      tableData: [
         {
-          fileName: '数据1',
-          source: '用户上传',
-          status: '上传中',
-          createTime: '2021-01-25 15:02:24'
-        },
-        {
-          fileName: '数据2',
-          source: '输出结果',
-          status: '正常',
-          createTime: '2021-01-25 15:02:24'
-        },
-        {
-          fileName: '数据3',
+          fileName: '组件初始化数据',
           source: '用户上传',
           status: '上传中',
           createTime: '2021-01-25 15:02:24'

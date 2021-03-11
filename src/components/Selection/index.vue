@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-30 15:11:40
+ * @LastEditTime: 2021-03-11 16:07:43
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \phoenix-eye\src\components\Selection\index.vue
+-->
 <template>
   <div id="selection">
     <label id="titleStyle">{{ title }} :</label>
@@ -35,6 +43,11 @@ export default {
     return {
       value: '',
       listData: this.list
+    }
+  },
+  watch: {
+    list (newValue, oldValue) {
+      this.listData = newValue
     }
   }
 }

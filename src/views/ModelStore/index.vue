@@ -42,9 +42,8 @@ export default {
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
-      // this.data = res.data['modelStoreInfo']
-      // this.projectList = res.data['projectList']
-      // this.fileSuffixList = res.data['fileSuffixList']
+      console.log(res.data)
+      this.data = res.data['modelStoreInfo']
     })
   },
   data () {
