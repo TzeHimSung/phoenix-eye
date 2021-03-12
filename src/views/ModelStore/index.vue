@@ -3,7 +3,6 @@
     <div id="Selection">
       <selection title="项目" :list="projectList"></selection>
       <selection title="后缀名" :list="fileSuffixList"></selection>
-      <bk-button theme="primary" style="margin-left: 10px;">上传模型</bk-button>
     </div>
     <div id="DataTable">
       <bk-table style="margin-top: 15px" :data="data" :size="'small'" :pagination="pagination"
@@ -23,13 +22,29 @@
         </bk-table-column>
       </bk-table>
     </div>
+    <div style="margin-top: 40px; width: 60%; display: inline-block">
+      <bk-divider align="center">上传模型</bk-divider>
+    </div>
+    <div id="UploadModel">
+      <bk-upload
+        :tip="'最多上传10个文件'"
+        :limit="uploadLimit"
+        :with-credentials="true"
+        :handle-res-code="handleRes"
+        :url="'http://localhost:8000/api/uploadModel'"
+        @on-success="uploadSuccess"
+        @on-progress="uploadProgress"
+        @on-done="uploadDone"
+        @on-error="uploadErr"
+      ></bk-upload>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import selection from '@/components/Selection'
-import { bkTable, bkTableColumn, bkButton } from 'bk-magic-vue'
+import { bkTable, bkTableColumn, bkButton, bkUpload, bkDivider } from 'bk-magic-vue'
 
 export default {
   name: 'ModelStore',
@@ -37,13 +52,16 @@ export default {
     selection,
     bkTable,
     bkTableColumn,
-    bkButton
+    bkButton,
+    bkUpload,
+    bkDivider
   },
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
-      console.log(res.data)
       this.data = res.data['modelStoreInfo']
+      this.projectList = res.data['projectList']
+      this.fileSuffixList = res.data['fileSuffixList']
     })
   },
   data () {
@@ -51,43 +69,19 @@ export default {
       projectList: [
         {
           id: 0,
-          name: 'Project 0'
-        },
-        {
-          id: 1,
-          name: 'Project 1'
-        },
-        {
-          id: 2,
-          name: 'Project 2'
+          name: 'Sample Project'
         }
       ],
       fileSuffixList: [
         {
           id: 0,
-          name: 'py'
-        },
-        {
-          id: 1,
-          name: 'other'
+          name: 'Sample file suffix'
         }
       ],
       size: 'small',
       data: [
         {
-          fileName: '模型1',
-          source: '用户上传',
-          status: '上传中',
-          createTime: '2021-01-25 15:02:24'
-        },
-        {
-          fileName: '模型2',
-          source: '输出结果',
-          status: '正常',
-          createTime: '2021-01-25 15:02:24'
-        },
-        {
-          fileName: '模型3',
+          fileName: 'Sample model',
           source: '用户上传',
           status: '上传中',
           createTime: '2021-01-25 15:02:24'
@@ -97,7 +91,8 @@ export default {
         current: 1,
         count: 3,
         limit: 20
-      }
+      },
+      uploadLimit: 10
     }
   },
   methods: {
@@ -106,6 +101,22 @@ export default {
     },
     handlePageChange (page) {
       this.pagination.current = page
+    },
+    uploadSuccess (file, fileList) {
+      console.log(file, fileList, 'success')
+    },
+    uploadProgress (e, file, fileList) {
+      console.log(e, file, fileList, 'progress')
+    },
+    uploadDone () {
+      console.log('done')
+    },
+    uploadErr (file, fileList) {
+      console.log(file, fileList, 'error')
+    },
+    handleRes (response) {
+      // 在这里处理返回结果，目前固定为成功
+      return true
     }
   }
 }
@@ -116,7 +127,11 @@ export default {
   margin-top: 20px;
   margin-left: 18%;
   margin-right: 18%;
-  text-align: center;
-  vertical-align: middle;
+}
+
+#UploadModel {
+  margin-top: 40px;
+  margin-left: 18%;
+  margin-right: 18%;
 }
 </style>

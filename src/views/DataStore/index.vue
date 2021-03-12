@@ -3,24 +3,41 @@
     <div id="Selection">
       <selection title="项目" :list="projectList"></selection>
       <selection title="后缀名" :list="fileSuffixList"></selection>
-      <bk-button theme="primary" style="margin-left: 10px;">上传数据</bk-button>
     </div>
     <div id="DataTable">
-      <bk-table style="margin-top: 15px" :data="tableData" :size="'small'" :pagination="pagination"
-        @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
-        <bk-table-column type="index" label="ID" width="60"></bk-table-column>
-        <bk-table-column label="文件名" prop="fileName"></bk-table-column>
-        <bk-table-column label="来源" prop="source"></bk-table-column>
-        <bk-table-column label="状态" prop="status"></bk-table-column>
-        <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
-        <bk-table-column label="操作" width="150">
-          <template slot-scope="props">
-            <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'" @click="reset(props.row)">下载
-            </bk-button>
-            <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
-          </template>
-        </bk-table-column>
-      </bk-table>
+      <form action="" method="post">
+        <bk-table style="margin-top: 15px" :data="tableData" :size="'small'" :pagination="pagination"
+          @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
+          <bk-table-column type="index" label="ID" width="60"></bk-table-column>
+          <bk-table-column label="文件名" prop="fileName"></bk-table-column>
+          <bk-table-column label="来源" prop="source"></bk-table-column>
+          <bk-table-column label="状态" prop="status"></bk-table-column>
+          <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
+          <bk-table-column label="操作" width="150">
+            <template slot-scope="props">
+              <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'" @click="reset(props.row)">下载
+              </bk-button>
+              <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
+            </template>
+          </bk-table-column>
+        </bk-table>
+      </form>
+    </div>
+    <div style="margin-top: 40px; width: 60%; display: inline-block">
+      <bk-divider align="center">上传数据</bk-divider>
+    </div>
+    <div id="UploadData">
+      <bk-upload
+        :tip="'最多上传10个文件'"
+        :limit="uploadLimit"
+        :with-credentials="true"
+        :handle-res-code="handleRes"
+        :url="'http://localhost:8000/api/uploadData'"
+        @on-success="uploadSuccess"
+        @on-progress="uploadProgress"
+        @on-done="uploadDone"
+        @on-error="uploadErr"
+      ></bk-upload>
     </div>
   </div>
 </template>
@@ -28,7 +45,7 @@
 <script>
 import axios from 'axios'
 import selection from '@/components/Selection'
-import { bkTable, bkTableColumn, bkButton } from 'bk-magic-vue'
+import { bkTable, bkTableColumn, bkButton, bkUpload, bkDivider } from 'bk-magic-vue'
 
 export default {
   name: 'DataStore',
@@ -36,12 +53,13 @@ export default {
     selection,
     bkTable,
     bkTableColumn,
-    bkButton
+    bkButton,
+    bkUpload,
+    bkDivider
   },
   created () {
     // get data store information
     axios.get('http://localhost:8000/api/getDataStoreInfo').then(res => {
-      console.log(res.data)
       this.tableData = res.data['dataStoreInfo']
       this.projectList = res.data['projectList']
       this.fileSuffixList = res.data['fileSuffixList']
@@ -52,35 +70,19 @@ export default {
       projectList: [
         {
           id: 0,
-          name: 'Project 0'
-        },
-        {
-          id: 1,
-          name: 'Project 1'
-        },
-        {
-          id: 2,
-          name: 'Project 2'
+          name: 'Sample Project'
         }
       ],
       fileSuffixList: [
         {
           id: 0,
-          name: 'csv'
-        },
-        {
-          id: 1,
-          name: 'txt'
-        },
-        {
-          id: 2,
-          name: 'json'
+          name: 'Sample file suffix'
         }
       ],
       size: 'small',
       tableData: [
         {
-          fileName: '组件初始化数据',
+          fileName: 'Sample data',
           source: '用户上传',
           status: '上传中',
           createTime: '2021-01-25 15:02:24'
@@ -90,7 +92,8 @@ export default {
         current: 1,
         count: 3,
         limit: 20
-      }
+      },
+      uploadLimit: 10
     }
   },
   methods: {
@@ -99,6 +102,22 @@ export default {
     },
     handlePageChange (page) {
       this.pagination.current = page
+    },
+    uploadSuccess (file, fileList) {
+      console.log(file, fileList, 'success')
+    },
+    uploadProgress (e, file, fileList) {
+      console.log(e, file, fileList, 'progress')
+    },
+    uploadDone () {
+      console.log('done')
+    },
+    uploadErr (file, fileList) {
+      console.log(file, fileList, 'error')
+    },
+    handleRes (response) {
+      // 在这里处理返回结果，目前固定为成功
+      return true
     }
   }
 }
@@ -109,7 +128,11 @@ export default {
   margin-top: 20px;
   margin-left: 18%;
   margin-right: 18%;
-  text-align: center;
-  vertical-align: middle;
+}
+
+#UploadData {
+  margin-top: 40px;
+  margin-left: 18%;
+  margin-right: 18%;
 }
 </style>
