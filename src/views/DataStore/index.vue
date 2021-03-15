@@ -5,23 +5,22 @@
       <selection title="后缀名" :list="fileSuffixList"></selection>
     </div>
     <div id="DataTable">
-      <form action="" method="post">
-        <bk-table style="margin-top: 15px" :data="tableData" :size="'small'" :pagination="pagination"
-          @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
-          <bk-table-column type="index" label="ID" width="60"></bk-table-column>
-          <bk-table-column label="文件名" prop="fileName"></bk-table-column>
-          <bk-table-column label="来源" prop="source"></bk-table-column>
-          <bk-table-column label="状态" prop="status"></bk-table-column>
-          <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
-          <bk-table-column label="操作" width="150">
-            <template slot-scope="props">
-              <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'" @click="reset(props.row)">下载
-              </bk-button>
-              <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
-            </template>
-          </bk-table-column>
-        </bk-table>
-      </form>
+      <bk-table style="margin-top: 15px" :data="tableData" :size="'small'" :pagination="pagination"
+        @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
+        <bk-table-column type="index" label="ID" width="60"></bk-table-column>
+        <bk-table-column label="文件名" prop="fileName"></bk-table-column>
+        <bk-table-column label="来源" prop="source"></bk-table-column>
+        <bk-table-column label="状态" prop="status"></bk-table-column>
+        <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
+        <bk-table-column label="操作" width="150">
+          <template slot-scope="props">
+            <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'"
+              @click="reset(props.row)">下载
+            </bk-button>
+            <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
+          </template>
+        </bk-table-column>
+      </bk-table>
     </div>
     <div style="margin-top: 40px; width: 60%; display: inline-block">
       <bk-divider align="center">上传数据</bk-divider>
