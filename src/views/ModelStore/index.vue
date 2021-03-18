@@ -50,7 +50,7 @@
               theme="primary"
               text
               :disabled="props.row.status === '上传中'"
-              @click="reset(props.row)"
+              @click="download(props.row)"
             >下载
             </bk-button>
             <bk-button
@@ -158,6 +158,30 @@ export default {
     handleRes (response) {
       // 在这里处理返回结果，目前固定为成功
       return true
+    },
+    download (row) {
+      const param = {
+        filename: row.fileName
+      }
+      axios.post('http://localhost:8000/api/downloadModel', param).then((res) => {
+        const content = res
+        const blob = new Blob([content])
+        const filename = param.filename
+        if ('download' in document.createElement('a')) {
+          const elink = document.createElement('a')
+          elink.download = filename
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href)
+          document.body.removeChild(elink)
+        } else {
+          navigator.msSaveBlob(blob, filename)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

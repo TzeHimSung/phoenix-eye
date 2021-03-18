@@ -166,17 +166,13 @@ export default {
       return true
     },
     download (row) {
-      console.log(row)
-      // const params = {
-      //   headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      // }
-      const data = {
+      const param = {
         filename: row.fileName
       }
-      axios.post('http://localhost:8000/api/downloadData', data).then((res) => {
+      axios.post('http://localhost:8000/api/downloadData', param).then((res) => {
         const content = res
         const blob = new Blob([content])
-        const filename = data.filename
+        const filename = param.filename
         if ('download' in document.createElement('a')) {
           const elink = document.createElement('a')
           elink.download = filename
@@ -189,6 +185,8 @@ export default {
         } else {
           navigator.msSaveBlob(blob, filename)
         }
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
