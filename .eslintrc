@@ -1,8 +1,7 @@
 {
     extends: [
+        "standard",
         "plugin:vue-libs/recommended"
     ],
-    rules: {
-        // override if necessary
-    }
+    rules: {}
 }
