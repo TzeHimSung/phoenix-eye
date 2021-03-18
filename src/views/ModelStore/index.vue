@@ -1,23 +1,64 @@
 <template>
   <div id="ModelStore">
     <div id="Selection">
-      <selection title="项目" :list="projectList"></selection>
-      <selection title="后缀名" :list="fileSuffixList"></selection>
+      <selection
+        title="项目"
+        :list="projectList"
+      ></selection>
+      <selection
+        title="后缀名"
+        :list="fileSuffixList"
+      ></selection>
     </div>
     <div id="DataTable">
-      <bk-table style="margin-top: 15px" :data="data" :size="'small'" :pagination="pagination"
-        @page-change="handlePageChange" @page-limit-change="handlePageLimitChange">
-        <bk-table-column type="index" label="ID" width="60"></bk-table-column>
-        <bk-table-column label="文件名" prop="fileName"></bk-table-column>
-        <bk-table-column label="来源" prop="source"></bk-table-column>
-        <bk-table-column label="状态" prop="status"></bk-table-column>
-        <bk-table-column label="创建时间" prop="createTime"></bk-table-column>
-        <bk-table-column label="操作" width="150">
+      <bk-table
+        style="margin-top: 15px"
+        :data="data"
+        :size="'small'"
+        :pagination="pagination"
+        @page-change="handlePageChange"
+        @page-limit-change="handlePageLimitChange"
+      >
+        <bk-table-column
+          type="index"
+          label="ID"
+          width="60"
+        ></bk-table-column>
+        <bk-table-column
+          label="文件名"
+          prop="fileName"
+        ></bk-table-column>
+        <bk-table-column
+          label="来源"
+          prop="source"
+        ></bk-table-column>
+        <bk-table-column
+          label="状态"
+          prop="status"
+        ></bk-table-column>
+        <bk-table-column
+          label="创建时间"
+          prop="createTime"
+        ></bk-table-column>
+        <bk-table-column
+          label="操作"
+          width="150"
+        >
           <template slot-scope="props">
-            <bk-button class="mr10" theme="primary" text :disabled="props.row.status === '上传中'"
-              @click="reset(props.row)">下载
+            <bk-button
+              class="mr10"
+              theme="primary"
+              text
+              :disabled="props.row.status === '上传中'"
+              @click="reset(props.row)"
+            >下载
             </bk-button>
-            <bk-button class="mr10" theme="primary" text @click="remove(props.row)">删除</bk-button>
+            <bk-button
+              class="mr10"
+              theme="primary"
+              text
+              @click="remove(props.row)"
+            >删除</bk-button>
           </template>
         </bk-table-column>
       </bk-table>
@@ -59,9 +100,9 @@ export default {
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
-      this.data = res.data['modelStoreInfo']
-      this.projectList = res.data['projectList']
-      this.fileSuffixList = res.data['fileSuffixList']
+      this.data = res.data.modelStoreInfo
+      this.projectList = res.data.projectList
+      this.fileSuffixList = res.data.fileSuffixList
     })
   },
   data () {
