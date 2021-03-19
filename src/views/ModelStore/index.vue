@@ -179,6 +179,15 @@ export default {
         } else {
           navigator.msSaveBlob(blob, filename)
         }
+
+        // download success notify
+        this.$bkNotify({
+          theme: 'success',
+          title: '下载成功',
+          message: '已成功下载 ' + filename,
+          offsetY: 80,
+          limitLine: 3
+        })
       }).catch(err => {
         console.log(err)
       })
