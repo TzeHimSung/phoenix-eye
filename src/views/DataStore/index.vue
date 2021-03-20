@@ -195,6 +195,13 @@ export default {
           limitLine: 3
         })
       }).catch(err => {
+        this.$bkNotify({
+          theme: 'error',
+          title: '下载失败',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
         console.log(err)
       })
     }
