@@ -160,10 +160,35 @@ export default {
     },
     uploadErr (file, fileList) {
       console.log(file, fileList, 'error')
+      this.$bkNotify({
+        theme: 'error',
+        title: '上传失败',
+        message: '无法上传文件，请检查网络连接',
+        offsetY: 80,
+        limitLine: 3
+      })
     },
-    handleRes (response) {
-      // 在这里处理返回结果，目前固定为成功
-      return true
+    handleRes (res) {
+      console.log(res)
+      // upload successfully
+      if (res.id === 0) {
+        this.$bkNotify({
+          theme: 'success',
+          title: '上传成功',
+          message: res.filelist[0] + ' 上传成功',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return true
+      }
+      this.$bkNotify({
+        theme: 'error',
+        title: '上传失败',
+        message: '无法上传文件，请检查网络连接',
+        offsetY: 80,
+        limitLine: 3
+      })
+      return false
     },
     download (row) {
       const param = {
@@ -194,7 +219,7 @@ export default {
           offsetY: 80,
           limitLine: 3
         })
-      }).catch(err => {
+      }).catch((err) => {
         this.$bkNotify({
           theme: 'error',
           title: '下载失败',
@@ -203,6 +228,41 @@ export default {
           limitLine: 3
         })
         console.log(err)
+      })
+    },
+    remove (row) {
+      const param = {
+        filename: row.fileName
+      }
+      // confirm delete file or not
+      this.$bkInfo({
+        title: '是否要删除文件 ' + param.filename,
+        confirmFn: () => {
+          axios.post('http://localhost:8000/api/deleteData', param).then((res) => {
+            if (res.data.id === 0) {
+              const newTableData = this.tableData
+              newTableData.splice(newTableData.indexOf(row), 1)
+              this.tableData = newTableData
+              // delete success notify
+              this.$bkNotify({
+                theme: 'success',
+                title: '删除成功',
+                message: '成功删除文件 ' + param.filename,
+                offsetY: 80,
+                limitLine: 3
+              })
+            }
+          }).catch((err) => {
+            console.log(err)
+            this.$bkNotify({
+              theme: 'error',
+              title: '删除失败',
+              message: err,
+              offsetY: 80,
+              limitLine: 3
+            })
+          })
+        }
       })
     }
   }
