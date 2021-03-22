@@ -13,7 +13,7 @@
     <div id="DataTable">
       <bk-table
         style="margin-top: 15px"
-        :data="data"
+        :data="tableData"
         :size="'small'"
         :pagination="pagination"
         @page-change="handlePageChange"
@@ -100,7 +100,7 @@ export default {
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
-      this.data = res.data.modelStoreInfo
+      this.tableData = res.data.modelStoreInfo
       this.projectList = res.data.projectList
       this.fileSuffixList = res.data.fileSuffixList
     })
@@ -120,7 +120,7 @@ export default {
         }
       ],
       size: 'small',
-      data: [
+      tableData: [
         {
           fileName: 'Sample model',
           source: '用户上传',
@@ -154,10 +154,34 @@ export default {
     },
     uploadErr (file, fileList) {
       console.log(file, fileList, 'error')
+      this.$bkNotify({
+        theme: 'error',
+        title: '上传失败',
+        message: '无法上传文件，请检查网络连接',
+        offsetY: 80,
+        limitLine: 3
+      })
     },
-    handleRes (response) {
-      // 在这里处理返回结果，目前固定为成功
-      return true
+    handleRes (res) {
+      // upload successfully
+      if (res.id === 0) {
+        this.$bkNotify({
+          theme: 'success',
+          title: '上传成功',
+          message: res.filelist[0] + ' 上传成功',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return true
+      }
+      this.$bkNotify({
+        theme: 'error',
+        title: '上传失败',
+        message: '无法上传文件，请检查网络连接',
+        offsetY: 80,
+        limitLine: 3
+      })
+      return false
     },
     download (row) {
       const param = {
@@ -197,6 +221,41 @@ export default {
           limitLine: 3
         })
         console.log(err)
+      })
+    },
+    remove (row) {
+      const param = {
+        filename: row.fileName
+      }
+      // confirm delete file or not
+      this.$bkInfo({
+        title: '是否要删除文件 ' + param.filename,
+        confirmFn: () => {
+          axios.post('http://localhost:8000/api/deleteModel', param).then((res) => {
+            if (res.data.id === 0) {
+              const newTableData = this.tableData
+              newTableData.splice(newTableData.indexOf(row), 1)
+              this.tableData = newTableData
+              // delete success notify
+              this.$bkNotify({
+                theme: 'success',
+                title: '删除成功',
+                message: '成功删除文件 ' + param.filename,
+                offsetY: 80,
+                limitLine: 3
+              })
+            }
+          }).catch((err) => {
+            console.log(err)
+            this.$bkNotify({
+              theme: 'error',
+              title: '删除失败',
+              message: err,
+              offsetY: 80,
+              limitLine: 3
+            })
+          })
+        }
       })
     }
   }
