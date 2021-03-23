@@ -101,6 +101,7 @@ export default {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
       this.tableData = res.data.modelStoreInfo
+      this.tableDataAll = this.tableData
       this.projectList = res.data.projectList
       this.fileSuffixList = res.data.fileSuffixList
     })
@@ -128,6 +129,14 @@ export default {
           createTime: '2021-01-25 15:02:24'
         }
       ],
+      tableDataAll: [
+        {
+          fileName: 'Sample model',
+          source: '用户上传',
+          status: '上传中',
+          createTime: '2021-01-25 15:02:24'
+        }
+      ],
       pagination: {
         current: 1,
         count: 3,
@@ -144,7 +153,13 @@ export default {
       this.pagination.current = page
     },
     uploadSuccess (file, fileList) {
-      console.log(file, fileList, 'success')
+      this.$bkNotify({
+        theme: 'success',
+        title: '上传成功',
+        message: file.name + ' 上传成功',
+        offsetY: 80,
+        limitLine: 3
+      })
     },
     uploadProgress (e, file, fileList) {
       console.log(e, file, fileList, 'progress')
@@ -153,11 +168,10 @@ export default {
       console.log('done')
     },
     uploadErr (file, fileList) {
-      console.log(file, fileList, 'error')
       this.$bkNotify({
         theme: 'error',
         title: '上传失败',
-        message: '无法上传文件，请检查网络连接',
+        message: '无法上传' + file.name + '，请检查网络连接',
         offsetY: 80,
         limitLine: 3
       })
@@ -165,22 +179,16 @@ export default {
     handleRes (res) {
       // upload successfully
       if (res.id === 0) {
-        this.$bkNotify({
-          theme: 'success',
-          title: '上传成功',
-          message: res.filelist[0] + ' 上传成功',
-          offsetY: 80,
-          limitLine: 3
+        const newTableData = this.tableData
+        newTableData.push({
+          fileName: res.filelist[0],
+          source: '用户上传',
+          status: '已完成',
+          createTime: '2021-03-23 00:00:00'
         })
+        this.tableData = newTableData
         return true
       }
-      this.$bkNotify({
-        theme: 'error',
-        title: '上传失败',
-        message: '无法上传文件，请检查网络连接',
-        offsetY: 80,
-        limitLine: 3
-      })
       return false
     },
     download (row) {
@@ -220,7 +228,6 @@ export default {
           offsetY: 80,
           limitLine: 3
         })
-        console.log(err)
       })
     },
     remove (row) {
@@ -246,6 +253,7 @@ export default {
               })
             }
           }).catch((err) => {
+            // do not delete this log
             console.log(err)
             this.$bkNotify({
               theme: 'error',
