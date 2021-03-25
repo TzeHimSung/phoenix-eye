@@ -5,6 +5,11 @@
       theme="primary"
       @click="launch()"
     >launch model</bk-button>
+    <bk-button
+      class="mr10"
+      theme="danger"
+      @click="killModel()"
+    >kill model</bk-button>
   </div>
 </template>
 
@@ -25,10 +30,36 @@ export default {
   methods: {
     launch () {
       const param = {
-        modelname: 'main.py'
+        modelname: 'handleData.py'
       }
       axios.post('http://localhost:8000/api/launchtest', param).then((res) => {
         console.log(res)
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: 'model is launched',
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+      })
+    },
+    killModel () {
+      const param = {
+        modelname: 'handleData.py'
+      }
+      axios.post('http://localhost:8000/api/killModel', param).then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: 'model has been killed',
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
       })
     }
   }
