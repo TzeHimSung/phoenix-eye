@@ -49,17 +49,20 @@ export default {
       const param = {
         modelname: 'handleData.py'
       }
-      axios.post('http://localhost:8000/api/killModel', param).then((res) => {
+      // axios.post('http://localhost:8000/api/killModel', param).then((res) => {
+      //   console.log(res)
+      //   if (res.status === 200) {
+      //     this.$bkNotify({
+      //       theme: 'success',
+      //       title: 'Success',
+      //       message: 'model has been killed',
+      //       offsetY: 80,
+      //       limitLine: 3
+      //     })
+      //   }
+      // })
+      axios.post('http://localhost:8000/api/launchcanceltest', param).then((res) => {
         console.log(res)
-        if (res.status === 200) {
-          this.$bkNotify({
-            theme: 'success',
-            title: 'Success',
-            message: 'model has been killed',
-            offsetY: 80,
-            limitLine: 3
-          })
-        }
       })
     }
   }
