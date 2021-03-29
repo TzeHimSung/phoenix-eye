@@ -50,6 +50,14 @@
               theme="primary"
               text
               :disabled="props.row.status === '上传中'"
+              @click="launch(props.row)"
+            >启动
+            </bk-button>
+            <bk-button
+              class="mr10"
+              theme="primary"
+              text
+              :disabled="props.row.status === '上传中'"
               @click="download(props.row)"
             >下载
             </bk-button>
@@ -190,6 +198,24 @@ export default {
         return true
       }
       return false
+    },
+    launch (row) {
+      const param = {
+        id: 0,
+        scriptName: row.fileName
+      }
+      axios.post('http://localhost:8000/api/launchModel', param).then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Launched',
+            message: 'Model ' + row.fileName + ' has been launched.',
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+      })
     },
     download (row) {
       const param = {
