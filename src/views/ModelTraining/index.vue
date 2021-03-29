@@ -22,6 +22,11 @@ export default {
   components: {
     bkButton
   },
+  created () {
+    axios.get('http://localhost:8000/api/getModelTrainingInfo').then((res) => {
+      console.log(res)
+    })
+  },
   data () {
     return {
       haha: 'Model training'
