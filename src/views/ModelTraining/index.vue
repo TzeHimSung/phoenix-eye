@@ -1,74 +1,104 @@
 <template>
   <div>
-    <bk-button
-      class="mr10"
-      theme="primary"
-      @click="launch()"
-    >launch model</bk-button>
-    <bk-button
-      class="mr10"
-      theme="danger"
-      @click="killModel()"
-    >kill model</bk-button>
+    <bk-table
+      style="margin-top: 15px;"
+      :data="tableData"
+      :size="'small'"
+      :pagination="pagination"
+      @page-change="handlePageChange"
+      @page-limit-change="handlePageLimitChange"
+    >
+      <bk-table-column
+        type="index"
+        label="序列"
+        width="60"
+      ></bk-table-column>
+      <bk-table-column
+        label="进程编号"
+        prop="id"
+      ></bk-table-column>
+      <bk-table-column
+        label="名称"
+        prop="scriptName"
+      ></bk-table-column>
+      <bk-table-column
+        label="创建时间"
+        prop="launchTime"
+      ></bk-table-column>
+      <bk-table-column
+        label="状态"
+        prop="status"
+      ></bk-table-column>
+      <bk-table-column
+        label="操作"
+        width="150"
+      >
+        <template slot-scope="props">
+          <bk-button
+            class="mr10"
+            theme="primary"
+            text
+            :disabled="props.row.status === 'Finished' || props.row.status === 'Killed'"
+            @click="killModel(props.row)"
+          >终止</bk-button>
+        </template>
+      </bk-table-column>
+    </bk-table>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { bkButton } from 'bk-magic-vue'
+import { bkTable, bkTableColumn } from 'bk-magic-vue'
 
 export default {
   name: 'ModelTraining',
   components: {
-    bkButton
+    bkTable,
+    bkTableColumn
   },
   created () {
     axios.get('http://localhost:8000/api/getModelTrainingInfo').then((res) => {
       console.log(res)
+      this.tableData = res.data.data
     })
   },
   data () {
     return {
-      haha: 'Model training'
+      haha: 'Model training',
+      tableData: [],
+      pagination: {
+        current: 1,
+        count: 500,
+        limit: 20
+      }
     }
   },
   methods: {
-    launch () {
+    killModel (row) {
       const param = {
-        modelname: 'handleData.py'
+        id: row.id,
+        scriptName: row.scriptName
       }
-      axios.post('http://localhost:8000/api/launchtest', param).then((res) => {
+      console.log(param)
+      axios.post('http://localhost:8000/api/killModel', param).then((res) => {
         console.log(res)
         if (res.status === 200) {
           this.$bkNotify({
             theme: 'success',
             title: 'Success',
-            message: 'model is launched',
+            message: 'Model has been killed',
             offsetY: 80,
             limitLine: 3
           })
         }
       })
     },
-    killModel () {
-      const param = {
-        modelname: 'handleData.py'
-      }
-      // axios.post('http://localhost:8000/api/killModel', param).then((res) => {
-      //   console.log(res)
-      //   if (res.status === 200) {
-      //     this.$bkNotify({
-      //       theme: 'success',
-      //       title: 'Success',
-      //       message: 'model has been killed',
-      //       offsetY: 80,
-      //       limitLine: 3
-      //     })
-      //   }
-      // })
-      axios.post('http://localhost:8000/api/launchcanceltest', param).then((res) => {
-        console.log(res)
-      })
+    handlePageLimitChange () {
+      console.log('handlePageLimitChange', arguments)
+    },
+    handlePageChange (page) {
+      this.pagination.current = page
     }
   }
 }
