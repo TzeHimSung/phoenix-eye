@@ -10,12 +10,13 @@
         :list="fileSuffixList"
       ></selection>
     </div>
-    <div id="DataTable">
+    <div id="ModelDataTable">
       <bk-table
         style="margin-top: 15px"
         :data="tableData"
         :size="'small'"
         :pagination="pagination"
+        v-bkloading="{ isLoading: modelDataTableLoading, zIndex: 10 }"
         @page-change="handlePageChange"
         @page-limit-change="handlePageLimitChange"
       >
@@ -108,8 +109,13 @@ export default {
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
+      // update model store table
       this.tableData = res.data.modelStoreInfo
       this.tableDataAll = this.tableData
+      // update pagination count
+      this.pagination.count = this.tableData.length
+      // cancel loading anime
+      this.modelDataTableLoading = false
       this.projectList = res.data.projectList
       this.fileSuffixList = res.data.fileSuffixList
     })
@@ -150,7 +156,8 @@ export default {
         count: 3,
         limit: 20
       },
-      uploadLimit: 10
+      uploadLimit: 10,
+      modelDataTableLoading: true
     }
   },
   methods: {
@@ -297,7 +304,7 @@ export default {
 </script>
 
 <style>
-#DataTable {
+#ModelDataTable {
   margin-top: 20px;
   margin-left: 18%;
   margin-right: 18%;
