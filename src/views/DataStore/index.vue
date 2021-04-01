@@ -107,8 +107,10 @@ export default {
   created () {
     // get data store information
     axios.get('http://localhost:8000/api/getDataStoreInfo').then((res) => {
+      // convert time format
+      const dataStoreInfo = this.timePredeal(res.data.dataStoreInfo)
       // update data store table
-      this.tableData = res.data.dataStoreInfo
+      this.tableData = dataStoreInfo
       this.tableDataAll = this.tableData
       // update pagination count
       this.pagination.count = this.tableData.length
@@ -192,17 +194,28 @@ export default {
     handleRes (res) {
       // upload successfully
       if (res.id === 0) {
+        console.log(res)
         const newTableData = this.tableData
+        // need to change
         newTableData.push({
           fileName: res.filelist[0],
-          source: '用户上传',
-          status: '已完成',
-          createTime: '2021-03-23 00:00:00'
+          source: 'User upload',
+          status: 'Uploaded',
+          createTime: res.createTime
         })
         this.tableData = newTableData
         return true
       }
       return false
+    },
+    timePredeal (dataStoreInfo) {
+      var retDataStoreInfo = []
+      for (let i = 0; i < dataStoreInfo.length; i++) {
+        var tmpDataStoreInfo = dataStoreInfo[i]
+        tmpDataStoreInfo.createTime = tmpDataStoreInfo.createTime.split('+')[0].replace('T', ' ')
+        retDataStoreInfo.push(tmpDataStoreInfo)
+      }
+      return retDataStoreInfo
     },
     download (row) {
       const param = {

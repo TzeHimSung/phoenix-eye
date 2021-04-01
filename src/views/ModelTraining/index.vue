@@ -108,12 +108,16 @@ export default {
   },
   created () {
     axios.get('http://localhost:8000/api/getModelTrainingInfo').then((res) => {
+      // convert time format
+      const runningModelList = this.timePredeal(res.data.runningModelList)
       // update running model data table
-      this.runningModelData = res.data.runningModelList
+      this.runningModelData = runningModelList
       this.runningModelDataPagination.count = this.runningModelData.length
       this.runningModelDataLoading = false
+      // convert time format
+      const finishedModelList = this.timePredeal(res.data.finishedModelList)
       // update finished model data table
-      this.finishedModelData = res.data.finishedModelList
+      this.finishedModelData = finishedModelList
       this.finishedModelDataPagination.count = this.finishedModelData.length
       this.finishedModelDataLoading = false
     })
@@ -138,6 +142,20 @@ export default {
     }
   },
   methods: {
+    timePredeal (modelStoreInfo) {
+      var retDataStoreInfo = []
+      for (let i = 0; i < modelStoreInfo.length; i++) {
+        var tmpDataStoreInfo = modelStoreInfo[i]
+        if (tmpDataStoreInfo.launchTime.indexOf('.') !== -1) {
+          tmpDataStoreInfo.launchTime = tmpDataStoreInfo.launchTime.split('.')[0].replace('T', ' ')
+        } else {
+          tmpDataStoreInfo.launchTime = tmpDataStoreInfo.launchTime.split('+')[0].replace('T', ' ')
+        }
+        tmpDataStoreInfo.finishTime = tmpDataStoreInfo.finishTime.split('+')[0].replace('T', ' ')
+        retDataStoreInfo.push(tmpDataStoreInfo)
+      }
+      return retDataStoreInfo
+    },
     killModel (row) {
       const param = {
         id: row.id,
@@ -147,6 +165,11 @@ export default {
       axios.post('http://localhost:8000/api/killModel', param).then((res) => {
         console.log(res)
         if (res.status === 200) {
+          // delete log from table
+          const newTableData = this.runningModelData
+          newTableData.splice(newTableData.indexOf(row), 1)
+          this.runningModelData = newTableData
+          // tips
           this.$bkNotify({
             theme: 'success',
             title: 'Success',

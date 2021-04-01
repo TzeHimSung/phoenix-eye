@@ -109,8 +109,11 @@ export default {
   created () {
     // get model store information
     axios.get('http://localhost:8000/api/getModelStoreInfo').then(res => {
+      // convert time format
+      const modelStoreInfo = this.timePredeal(res.data.modelStoreInfo)
+      // const modelStoreInfo = res.data.modelStoreInfo
       // update model store table
-      this.tableData = res.data.modelStoreInfo
+      this.tableData = modelStoreInfo
       this.tableDataAll = this.tableData
       // update pagination count
       this.pagination.count = this.tableData.length
@@ -197,14 +200,23 @@ export default {
         const newTableData = this.tableData
         newTableData.push({
           fileName: res.filelist[0],
-          source: '用户上传',
-          status: '已完成',
-          createTime: '2021-03-23 00:00:00'
+          source: 'User upload',
+          status: 'Uploaded',
+          createTime: res.createTime
         })
         this.tableData = newTableData
         return true
       }
       return false
+    },
+    timePredeal (modelStoreInfo) {
+      var retModelStoreInfo = []
+      for (let i = 0; i < modelStoreInfo.length; i++) {
+        var tmpModelStoreInfo = modelStoreInfo[i]
+        tmpModelStoreInfo.createTime = tmpModelStoreInfo.createTime.split('+')[0].replace('T', ' ')
+        retModelStoreInfo.push(tmpModelStoreInfo)
+      }
+      return retModelStoreInfo
     },
     launch (row) {
       const param = {
