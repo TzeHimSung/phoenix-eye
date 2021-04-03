@@ -199,7 +199,7 @@ export default {
       if (res.id === 0) {
         const newTableData = this.tableData
         newTableData.push({
-          fileName: res.filelist[0],
+          fileName: res.filename,
           source: 'User upload',
           status: 'Uploaded',
           createTime: res.createTime

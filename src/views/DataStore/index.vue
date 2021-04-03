@@ -198,7 +198,7 @@ export default {
         const newTableData = this.tableData
         // need to change
         newTableData.push({
-          fileName: res.filelist[0],
+          fileName: res.filename,
           source: 'User upload',
           status: 'Uploaded',
           createTime: res.createTime
