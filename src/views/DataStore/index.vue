@@ -3,20 +3,22 @@
     <div id="Selection">
       <selection
         title="项目"
+        @change="changeproject"
         :list="projectList"
       ></selection>
       <selection
         title="后缀名"
+        v-show="true"
         :list="fileSuffixList"
       ></selection>
     </div>
-    <div id="DataDataTable">
+    <div id="ProjectFileTable">
       <bk-table
         style="margin-top: 15px"
         :data="tableData"
         :size="'small'"
         :pagination="pagination"
-        v-bkloading="{ isLoading: dataDataTableLoading, zIndex: 10 }"
+        v-bkloading="{ isLoading: projectFileTableLoading, zIndex: 10 }"
         @page-change="handlePageChange"
         @page-limit-change="handlePageLimitChange"
       >
@@ -105,19 +107,35 @@ export default {
     bkDivider
   },
   created () {
+    // todo: rewrite created func
+    // get project list
+    axios.get('http://localhost:8000/api/getProjectInfo').then((res) => {
+      var tmpProjectList = []
+      // convert project list style
+      for (var i = 0; i < res.data.projectList.length; i++) {
+        tmpProjectList.push({
+          id: i,
+          name: res.data.projectList[i].projectName
+        })
+      }
+      this.projectList = tmpProjectList
+      console.log('project list: ')
+      console.log(this.projectList)
+    }).catch((err) => {
+      console.log(err)
+      this.$bkNotify({
+        theme: 'error',
+        title: 'Can not get project information',
+        message: err,
+        limitLine: 3,
+        offsetY: 80
+      })
+    })
     // get data store information
     axios.get('http://localhost:8000/api/getDataStoreInfo').then((res) => {
       // convert time format
-      const dataStoreInfo = this.timePredeal(res.data.dataStoreInfo)
-      // update data store table
-      this.tableData = dataStoreInfo
-      this.tableDataAll = this.tableData
-      // update pagination count
-      this.pagination.count = this.tableData.length
-      // cancel loading anime
-      this.dataDataTableLoading = false
-      this.projectList = res.data.projectList
-      this.fileSuffixList = res.data.fileSuffixList
+      // const dataStoreInfo = this.timePredeal(res.data.dataStoreInfo)
+      // console.log(dataStoreInfo)
     })
   },
   data () {
@@ -157,7 +175,8 @@ export default {
         limit: 20
       },
       uploadLimit: 10,
-      dataDataTableLoading: true
+      projectFileTableLoading: false,
+      currproject: ''
     }
   },
   methods: {
@@ -291,13 +310,17 @@ export default {
           })
         }
       })
+    },
+    changeproject (newproject) {
+      debugger
+      console.log(newproject)
     }
   }
 }
 </script>
 
 <style>
-#DataDataTable {
+#ProjectFileTable {
   margin-top: 20px;
   margin-left: 18%;
   margin-right: 18%;

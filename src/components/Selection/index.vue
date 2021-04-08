@@ -1,18 +1,10 @@
-<!--
- * @Author: your name
- * @Date: 2021-01-30 15:11:40
- * @LastEditTime: 2021-03-11 16:07:43
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \phoenix-eye\src\components\Selection\index.vue
--->
 <template>
   <div id="selection">
     <label id="titleStyle">{{ title }} :</label>
     <bk-select
       id="selectStyle"
-      :disabled="false"
-      v-model="value"
+      :value="value"
+      @change="handleChange"
       style="width: 250px; display: inline-block;"
       searchable
     >
@@ -48,6 +40,22 @@ export default {
   watch: {
     list (newValue, oldValue) {
       this.listData = newValue
+    }
+  },
+  methods: {
+    handleChange (newValue, oldValue) {
+      // debugger
+      console.log('list prop:')
+      console.log(this.list)
+      console.log('list data:')
+      console.log(this.listData)
+      console.log('old value:')
+      console.log(oldValue)
+      console.log('new value:')
+      console.log(newValue)
+      console.log('this value:')
+      console.log(this.value)
+      this.$emit('change', this.value)
     }
   }
 }
