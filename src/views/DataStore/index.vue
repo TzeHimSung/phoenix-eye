@@ -6,11 +6,11 @@
         @change="changeproject"
         :list="projectList"
       ></selection>
-      <selection
+      <!-- <selection
         title="后缀名"
         v-show="true"
         :list="fileSuffixList"
-      ></selection>
+      ></selection> -->
     </div>
     <div id="ProjectFileTable">
       <bk-table
@@ -176,7 +176,7 @@ export default {
       },
       uploadLimit: 10,
       projectFileTableLoading: false,
-      currproject: ''
+      currProject: ''
     }
   },
   methods: {
@@ -311,9 +311,9 @@ export default {
         }
       })
     },
-    changeproject (newproject) {
-      debugger
-      console.log(newproject)
+    changeproject (newProjectName) {
+      this.currProject = newProjectName
+      console.log(this.currProject)
     }
   }
 }
