@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // import pages
-import Home from '../views/Home.vue'
+import Home from '@/views/HomePage'
 import DataStore from '@/views/DataStore'
 import ModelStore from '@/views/ModelStore'
 import ModelTraining from '@/views/ModelTraining'
