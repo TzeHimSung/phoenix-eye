@@ -161,14 +161,24 @@ export default {
         id: row.id,
         scriptName: row.scriptName
       }
-      console.log(param)
       axios.post('http://localhost:8000/api/killModel', param).then((res) => {
         console.log(res)
         if (res.status === 200) {
-          // delete log from table
-          const newTableData = this.runningModelData
+          // delete log from running model table
+          var newTableData = this.runningModelData
           newTableData.splice(newTableData.indexOf(row), 1)
           this.runningModelData = newTableData
+          // update running model table pagination
+          this.runningModelDataPagination.count -= 1
+          // add log to finished model table
+          newTableData = this.finishedModelData
+          newTableData.push({
+            scriptName: res.data.modelName,
+            launchTime: res.data.modelLaunchTime,
+            status: res.data.modelStatus
+          })
+          // update finished model table pagination
+          this.finishedModelDataPagination.count += 1
           // tips
           this.$bkNotify({
             theme: 'success',
