@@ -55,10 +55,6 @@ export default {
   display: inline;
 }
 
-#labelStyle {
-  vertical-align: middle;
-}
-
 #selectStyle {
   vertical-align: middle;
   margin-left: 20px;
