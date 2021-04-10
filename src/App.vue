@@ -163,10 +163,6 @@ export default {
     handleToggle (v) {
       this.nav.toggle = v
     },
-    beforeNavChange (newId, oldId) {
-      console.info(newId, oldId)
-      return true
-    },
     changeRouterView (viewName) {
       for (let i = 0; i < this.header.list.length; i++) {
         if (viewName === this.header.list[i].name) {
