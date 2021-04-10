@@ -25,7 +25,7 @@
       <bk-button
         class="mr10"
         :theme="'primary'"
-        @click="triggerCreateProject"
+        @click="createProjectShow = true"
       >创建项目</bk-button>
       <bk-button
         class="mr10"
@@ -344,10 +344,6 @@ export default {
           })
         }
       })
-    },
-    // user click create project button
-    triggerCreateProject () {
-      this.createProjectShow = true
     },
     // user typed in new project name and confirm
     createProject () {
