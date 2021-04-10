@@ -1,16 +1,50 @@
 <template>
   <div id="DataStore">
+<!--    create project dialog-->
+    <bk-dialog
+      theme="primary"
+      title="创建项目"
+      v-model="createProjectShow"
+      :header-position="'left'"
+      @confirm="createProject"
+    >
+      <bk-input
+        class="mr10"
+        v-model="newProjectName"
+        :placeholder="'请输入项目名称'"
+        :clearable="true"
+      ></bk-input>
+    </bk-dialog>
+<!--    create project dialog end-->
     <div id="Selection">
       <selection
         title="项目"
-        @change="changeproject"
+        @change="changeProject"
         :list="projectList"
       ></selection>
-      <!-- <selection
-        title="后缀名"
-        v-show="true"
-        :list="fileSuffixList"
-      ></selection> -->
+      <bk-button
+        class="mr10"
+        :theme="'primary'"
+        @click="triggerCreateProject"
+      >创建项目</bk-button>
+      <bk-button
+        class="mr10"
+        :theme="'default'"
+        @click="createVEnv"
+        v-bkloading="{ isLoading: createVEnvLoading, zIndex: 10 }"
+      >安装虚拟环境</bk-button>
+      <bk-button
+        class="mr10"
+        :theme="'default'"
+        @click="installRequirement"
+        v-bkloading="{ isLoading: installRequirementLoading, zIndex: 10 }"
+      >安装依赖包</bk-button>
+      <bk-button
+        class="mr10"
+        :theme="'danger'"
+        @click="deleteProject"
+        v-bkloading="{ isLoading: deleteProjectLoading, zIndex: 10 }"
+      >删除当前项目</bk-button>
     </div>
     <div id="ProjectFileTable">
       <bk-table
@@ -34,10 +68,6 @@
         <bk-table-column
           label="来源"
           prop="source"
-        ></bk-table-column>
-        <bk-table-column
-          label="状态"
-          prop="status"
         ></bk-table-column>
         <bk-table-column
           label="创建时间"
@@ -87,13 +117,16 @@
 
 <script>
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import selection from '@/components/Selection'
 import {
   bkTable,
   bkTableColumn,
   bkButton,
   bkUpload,
-  bkDivider
+  bkDivider,
+  bkDialog,
+  bkInput
 } from 'bk-magic-vue'
 
 export default {
@@ -104,23 +137,22 @@ export default {
     bkTableColumn,
     bkButton,
     bkUpload,
-    bkDivider
+    bkDivider,
+    bkDialog,
+    bkInput
   },
   created () {
-    // todo: rewrite created func
     // get project list
     axios.get('http://localhost:8000/api/getProjectInfo').then((res) => {
-      var tmpProjectList = []
+      const tmpProjectList = []
       // convert project list style
-      for (var i = 0; i < res.data.projectList.length; i++) {
+      for (let i = 0; i < res.data.projectList.length; i++) {
         tmpProjectList.push({
           id: i,
           name: res.data.projectList[i].projectName
         })
       }
       this.projectList = tmpProjectList
-      console.log('project list: ')
-      console.log(this.projectList)
     }).catch((err) => {
       console.log(err)
       this.$bkNotify({
@@ -131,12 +163,6 @@ export default {
         offsetY: 80
       })
     })
-    // get data store information
-    axios.get('http://localhost:8000/api/getDataStoreInfo').then((res) => {
-      // convert time format
-      // const dataStoreInfo = this.timePredeal(res.data.dataStoreInfo)
-      // console.log(dataStoreInfo)
-    })
   },
   data () {
     return {
@@ -146,16 +172,10 @@ export default {
           name: 'Sample Project'
         }
       ],
-      fileSuffixList: [
-        {
-          id: 0,
-          name: 'Sample file suffix'
-        }
-      ],
       size: 'small',
       tableData: [
         {
-          fileName: 'Sample data',
+          fileName: 'Please select project',
           source: '用户上传',
           status: '上传中',
           createTime: '2021-01-25 15:02:24'
@@ -176,7 +196,12 @@ export default {
       },
       uploadLimit: 10,
       projectFileTableLoading: false,
-      currProject: ''
+      currProject: '',
+      createProjectShow: false,
+      newProjectName: '',
+      createVEnvLoading: false,
+      installRequirementLoading: false,
+      deleteProjectLoading: false
     }
   },
   methods: {
@@ -186,6 +211,7 @@ export default {
     handlePageChange (page) {
       this.pagination.current = page
     },
+    // file upload process success handler
     uploadSuccess (file, fileList) {
       this.$bkNotify({
         theme: 'success',
@@ -198,9 +224,11 @@ export default {
     uploadProgress (e, file, fileList) {
       console.log(e, file, fileList, 'progress')
     },
+    // file upload process done handler
     uploadDone () {
       console.log('done')
     },
+    // file upload process error handler
     uploadErr (file, fileList) {
       this.$bkNotify({
         theme: 'error',
@@ -210,6 +238,7 @@ export default {
         limitLine: 3
       })
     },
+    // file upload process response handler
     handleRes (res) {
       // upload successfully
       if (res.id === 0) {
@@ -227,6 +256,7 @@ export default {
       }
       return false
     },
+    // convert time to yyyy-mm-dd hh:MM:SS style
     timePredeal (dataStoreInfo) {
       var retDataStoreInfo = []
       for (let i = 0; i < dataStoreInfo.length; i++) {
@@ -236,9 +266,11 @@ export default {
       }
       return retDataStoreInfo
     },
+    // download file
     download (row) {
       const param = {
-        filename: row.fileName
+        filename: row.fileName,
+        projectName: this.currProject
       }
       axios.post('http://localhost:8000/api/downloadData', param).then((res) => {
         const content = res
@@ -275,9 +307,11 @@ export default {
         })
       })
     },
+    // delete file
     remove (row) {
       const param = {
-        filename: row.fileName
+        filename: row.fileName,
+        projectName: this.currProject
       }
       // confirm delete file or not
       this.$bkInfo({
@@ -311,9 +345,233 @@ export default {
         }
       })
     },
-    changeproject (newProjectName) {
+    // user click create project button
+    triggerCreateProject () {
+      this.createProjectShow = true
+    },
+    // user typed in new project name and confirm
+    createProject () {
+      const projectName = this.newProjectName
+      this.newProjectName = ''
+      this.createProjectShow = false
+      const param = {
+        projectName: projectName
+      }
+      axios.post('http://localhost:8000/api/createProject', param).then((res) => {
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        } else {
+          this.$bkNotify({
+            theme: 'danger',
+            title: 'Failed',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+      }).catch((err) => {
+        console.log(err)
+        this.$bkNotify({
+          theme: 'danger',
+          title: 'Can not create project',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+      })
+    },
+    // change project
+    changeProject (newProjectName) {
       this.currProject = newProjectName
-      console.log(this.currProject)
+      // set project name in cookie
+      Cookies.set('projectName', newProjectName)
+      const param = {
+        projectName: newProjectName
+      }
+      axios.post('http://localhost:8000/api/getProjectFile', param).then((res) => {
+        if (res.status === 200) {
+          this.tableData = this.timePredeal(res.data.fileList)
+          this.pagination.count = this.tableData.length
+        }
+      }).catch((err) => {
+        this.$bkNotify({
+          theme: 'danger',
+          title: 'Can not get project file list',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+      })
+    },
+    // create virtual environment for current project
+    createVEnv () {
+      // check select project or not
+      if (this.currProject === '') {
+        this.$bkNotify({
+          theme: 'warning',
+          title: 'Project not selected',
+          message: 'Please select a project',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return
+      }
+      this.createVEnvLoading = true
+      this.$bkNotify({
+        theme: 'primary',
+        title: 'Installing',
+        message: 'Virtual environment is installing, please wait',
+        offsetY: 80,
+        limitLine: 3
+      })
+      const param = {
+        projectName: this.currProject
+      }
+      axios.post('http://localhost:8000/api/createVirtualEnv', param).then((res) => {
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        } else {
+          this.$bkNotify({
+            theme: 'danger',
+            title: 'Failed',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+        this.createVEnvLoading = false
+      }).catch((err) => {
+        console.log(err)
+        this.$bkNotify({
+          theme: 'danger',
+          title: 'Can not create virtual environment',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+        this.createVEnvLoading = false
+      })
+    },
+    // install required software package
+    installRequirement () {
+      // check select project or not
+      if (this.currProject === '') {
+        this.$bkNotify({
+          theme: 'warning',
+          title: 'Project not selected',
+          message: 'Please select a project',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return
+      }
+      this.installRequirementLoading = true
+      this.$bkNotify({
+        theme: 'primary',
+        title: 'Installing',
+        message: 'Required packages is installing, please wait',
+        offsetY: 80,
+        limitLine: 3
+      })
+      const param = {
+        projectName: this.currProject
+      }
+      axios.post('http://localhost:8000/api/installRequirement', param).then((res) => {
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        } else {
+          this.$bkNotify({
+            theme: 'danger',
+            title: 'Failed',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+        this.installRequirementLoading = false
+      }).catch((err) => {
+        console.log(err)
+        this.$bkNotify({
+          theme: 'danger',
+          title: 'Can not install packages',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+        this.installRequirementLoading = false
+      })
+    },
+    // delete current project
+    deleteProject () {
+      // check select project or not
+      if (this.currProject === '') {
+        this.$bkNotify({
+          theme: 'warning',
+          title: 'Project not selected',
+          message: 'Please select a project',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return
+      }
+      this.deleteProjectLoading = true
+      this.$bkNotify({
+        theme: 'primary',
+        title: 'Deleting',
+        message: 'Deleting project, please wait',
+        offsetY: 80,
+        limitLine: 3
+      })
+      const param = {
+        projectName: this.currProject
+      }
+      axios.post('http://localhost:8000/api/deleteProject', param).then((res) => {
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        } else {
+          this.$bkNotify({
+            theme: 'danger',
+            title: 'Failed',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+        this.deleteProjectLoading = false
+      }).catch((err) => {
+        console.log(err)
+        this.$bkNotify({
+          theme: 'danger',
+          title: 'Can not delete project',
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+      })
     }
   }
 }
