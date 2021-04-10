@@ -102,10 +102,10 @@ export default {
             url: '/'
           },
           {
-            name: '数据存储',
+            name: '项目管理',
             id: 1,
             show: true,
-            url: '/datastore',
+            url: '/projectManagement',
             // 这里留一个样例
             navList: [
               {

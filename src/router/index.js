@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 // import pages
 import Home from '@/views/HomePage'
-import DataStore from '@/views/DataStore'
+import ProjectManagement from '@/views/ProjectManagement'
 import ModelStore from '@/views/ModelStore'
 import ModelTraining from '@/views/ModelTraining'
 import ModelApp from '@/views/ModelApp'
@@ -26,9 +26,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/datastore',
-    name: 'DataStore',
-    component: DataStore
+    path: '/projectManagement',
+    name: 'ProjectManagement',
+    component: ProjectManagement
   },
   {
     path: '/modelstore',
