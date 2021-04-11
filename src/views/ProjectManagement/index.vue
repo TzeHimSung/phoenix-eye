@@ -45,6 +45,12 @@
         @click="deleteProject"
         v-bkloading="{ isLoading: deleteProjectLoading, zIndex: 10 }"
       >删除当前项目</bk-button>
+      <bk-button
+        class="mr10"
+        :theme="'success'"
+        @click="launchProject"
+        v-bkloading="{ isLoading: launchProjectLoading, zIndex: 10 }"
+      >启动</bk-button>
     </div>
     <div id="ProjectFileTable">
       <bk-table
@@ -105,7 +111,7 @@
         :limit="uploadLimit"
         :with-credentials="true"
         :handle-res-code="handleRes"
-        :url="'http://localhost:8000/api/uploadData'"
+        :url="'http://localhost:8000/api/uploadFile'"
         @on-success="uploadSuccess"
         @on-progress="uploadProgress"
         @on-done="uploadDone"
@@ -201,7 +207,8 @@ export default {
       newProjectName: '',
       createVEnvLoading: false,
       installRequirementLoading: false,
-      deleteProjectLoading: false
+      deleteProjectLoading: false,
+      launchProjectLoading: false
     }
   },
   methods: {
@@ -272,7 +279,7 @@ export default {
         filename: row.fileName,
         projectName: this.currProject
       }
-      axios.post('http://localhost:8000/api/downloadData', param).then((res) => {
+      axios.post('http://localhost:8000/api/downloadFile', param).then((res) => {
         const content = res
         const blob = new Blob([content])
         const filename = param.filename
@@ -317,7 +324,7 @@ export default {
       this.$bkInfo({
         title: '是否要删除文件 ' + param.filename,
         confirmFn: () => {
-          axios.post('http://localhost:8000/api/deleteData', param).then((res) => {
+          axios.post('http://localhost:8000/api/deleteFile', param).then((res) => {
             if (res.data.id === 0) {
               const newTableData = this.tableData
               newTableData.splice(newTableData.indexOf(row), 1)
@@ -567,6 +574,62 @@ export default {
           offsetY: 80,
           limitLine: 3
         })
+        this.deleteProjectLoading = false
+      })
+    },
+    // launch current project
+    launchProject () {
+      // check select project or not
+      if (this.currProject === '') {
+        this.$bkNotify({
+          theme: 'warning',
+          title: 'Project not selected',
+          message: 'Please select a project',
+          offsetY: 80,
+          limitLine: 3
+        })
+        return
+      }
+      this.launchProjectLoading = true
+      this.$bkNotify({
+        theme: 'primary',
+        title: 'Launching',
+        message: 'Launching project, please wait',
+        offsetY: 80,
+        limitLine: 3
+      })
+      const param = {
+        projectName: this.currProject
+      }
+      axios.post('http://localhost:8000/api/launchProject', param).then((res) => {
+        if (res.status === 200) {
+          this.$bkNotify({
+            theme: 'success',
+            title: 'Success',
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        } else {
+          this.$bkNotify({
+            theme: 'Failed',
+            title: 'Can not launch project ' + param.projectName,
+            message: res.data.message,
+            offsetY: 80,
+            limitLine: 3
+          })
+        }
+        this.launchProjectLoading = false
+      }).catch((err) => {
+        console.log(err)
+        this.$bkNotify({
+          theme: 'Failed',
+          title: 'Can not launch project ' + param.projectName,
+          message: err,
+          offsetY: 80,
+          limitLine: 3
+        })
+        this.launchProjectLoading = false
       })
     }
   }
