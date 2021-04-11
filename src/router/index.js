@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 // import pages
 import Home from '@/views/HomePage'
 import ProjectManagement from '@/views/ProjectManagement'
-import ModelStore from '@/views/ModelStore'
 import ModelTraining from '@/views/ModelTraining'
 import ModelApp from '@/views/ModelApp'
 import LearnVue from '@/components/LearnVue'
@@ -29,11 +28,6 @@ const routes = [
     path: '/projectManagement',
     name: 'ProjectManagement',
     component: ProjectManagement
-  },
-  {
-    path: '/modelstore',
-    name: 'ModelStore',
-    component: ModelStore
   },
   {
     path: '/modeltraining',

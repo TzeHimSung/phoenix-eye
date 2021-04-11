@@ -115,26 +115,20 @@ export default {
             ]
           },
           {
-            name: '模型存储',
-            id: 2,
-            show: true,
-            url: '/modelstore'
-          },
-          {
             name: '模型训练',
-            id: 3,
+            id: 2,
             show: true,
             url: '/modeltraining'
           },
           {
             name: '模型应用',
-            id: 4,
+            id: 3,
             show: true,
             url: '/modelapp'
           },
           {
             name: 'LearnVue',
-            id: 5,
+            id: 4,
             show: true,
             url: '/learnvue'
           }
