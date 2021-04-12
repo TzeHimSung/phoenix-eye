@@ -27,7 +27,7 @@
             ></bk-table-column>
             <bk-table-column
               label="名称"
-              prop="scriptName"
+              prop="projectName"
             ></bk-table-column>
             <bk-table-column
               label="创建时间"
@@ -47,7 +47,7 @@
                   theme="primary"
                   text
                   :disabled="props.row.status === 'Finished' || props.row.status === 'Killed'"
-                  @click="killModel(props.row)"
+                  @click="killProject(props.row)"
                 >终止</bk-button>
               </template>
             </bk-table-column>
@@ -78,7 +78,7 @@
             ></bk-table-column>
             <bk-table-column
               label="名称"
-              prop="scriptName"
+              prop="projectName"
             ></bk-table-column>
             <bk-table-column
               label="创建时间"
@@ -107,17 +107,18 @@ export default {
     bkCard
   },
   created () {
-    axios.get('http://localhost:8000/api/getModelTrainingInfo').then((res) => {
+    axios.get('http://localhost:8000/api/getRunningProjectInfo').then((res) => {
+      console.log(res)
       // convert time format
-      const runningModelList = this.timePredeal(res.data.runningModelList)
+      const runningProjectList = this.timePredeal(res.data.runningProjectList)
       // update running model data table
-      this.runningModelData = runningModelList
+      this.runningModelData = runningProjectList
       this.runningModelDataPagination.count = this.runningModelData.length
       this.runningModelDataLoading = false
       // convert time format
-      const finishedModelList = this.timePredeal(res.data.finishedModelList)
+      const finishedProjectList = this.timePredeal(res.data.finishedProjectList)
       // update finished model data table
-      this.finishedModelData = finishedModelList
+      this.finishedModelData = finishedProjectList
       this.finishedModelDataPagination.count = this.finishedModelData.length
       this.finishedModelDataLoading = false
     })
@@ -156,13 +157,12 @@ export default {
       }
       return retDataStoreInfo
     },
-    killModel (row) {
+    killProject (row) {
       const param = {
         id: row.id,
-        scriptName: row.scriptName
+        projectName: row.projectName
       }
-      axios.post('http://localhost:8000/api/killModel', param).then((res) => {
-        console.log(res)
+      axios.post('http://localhost:8000/api/killProject', param).then((res) => {
         if (res.status === 200) {
           // delete log from running model table
           var newTableData = this.runningModelData
@@ -173,9 +173,9 @@ export default {
           // add log to finished model table
           newTableData = this.finishedModelData
           newTableData.push({
-            scriptName: res.data.modelName,
-            launchTime: res.data.modelLaunchTime,
-            status: res.data.modelStatus
+            projectName: res.data.projectName,
+            launchTime: res.data.projectLaunchTime,
+            status: res.data.projectStatus
           })
           // update finished model table pagination
           this.finishedModelDataPagination.count += 1
