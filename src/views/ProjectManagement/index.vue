@@ -125,15 +125,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import selection from '@/components/Selection'
-import {
-  bkTable,
-  bkTableColumn,
-  bkButton,
-  bkUpload,
-  bkDivider,
-  bkDialog,
-  bkInput
-} from 'bk-magic-vue'
+import { bkButton, bkDialog, bkDivider, bkInput, bkTable, bkTableColumn, bkUpload } from 'bk-magic-vue'
 
 export default {
   name: 'DataStore',
@@ -280,8 +272,7 @@ export default {
         projectName: this.currProject
       }
       axios.post('http://localhost:8000/api/downloadFile', param).then((res) => {
-        const content = res
-        const blob = new Blob([content])
+        const blob = new Blob([res])
         const filename = param.filename
         if ('download' in document.createElement('a')) {
           const elink = document.createElement('a')
