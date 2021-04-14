@@ -22,8 +22,8 @@
               width="60"
             ></bk-table-column>
             <bk-table-column
-              label="进程编号"
-              prop="id"
+              label="PID"
+              prop="pid"
             ></bk-table-column>
             <bk-table-column
               label="名称"
@@ -79,6 +79,10 @@
             <bk-table-column
               label="名称"
               prop="projectName"
+            ></bk-table-column>
+            <bk-table-column
+              label="PID"
+              prop="pid"
             ></bk-table-column>
             <bk-table-column
               label="创建时间"
