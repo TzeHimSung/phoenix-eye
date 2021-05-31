@@ -96,7 +96,7 @@ export default {
       header: {
         list: [
           {
-            name: '我的首页',
+            name: '首页',
             id: 0,
             show: true,
             url: '/'
@@ -115,22 +115,16 @@ export default {
             ]
           },
           {
-            name: '模型训练',
+            name: '模型进程',
             id: 2,
             show: true,
             url: '/modeltraining'
           },
           {
-            name: '模型应用',
+            name: '运行结果',
             id: 3,
             show: true,
             url: '/modelapp'
-          },
-          {
-            name: 'LearnVue',
-            id: 4,
-            show: true,
-            url: '/learnvue'
           }
         ],
         active: 0
